@@ -32,7 +32,7 @@ class Test(FirefoxTest):
 
         navigate("https://testsafebrowsing.appspot.com")
 
-        expected = exists(DownloadFiles.MALICIOUS, 10)
+        expected = exists(DownloadFiles.MALICIOUS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Malicious file has been found."
 
         width, height = DownloadFiles.MALICIOUS.get_size()
@@ -43,53 +43,60 @@ class Test(FirefoxTest):
             expect_accept_download_available=download_available,
         )
 
-        expected = exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
+        expected = exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Blocked download icon is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW, 10)
+        expected = exists(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW,
+                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Open malicious download arrow is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD, 10)
+        expected = exists(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Virus or malware message is displayed."
 
         width, height = DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW.get_size()
-        mouse.move(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW.target_offset(width / 2 + 10, 0))
+        move(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW.target_offset(width / 2 + 10, 0))
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DOWNLOAD, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DOWNLOAD,
+                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download is highlighted red."
 
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_WHITE_ARROW)
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.HEADER, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.HEADER, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download details header is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DOWNLOAD_TITLE, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DOWNLOAD_TITLE,
+                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download details title is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_1, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_1,
+                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download details 1 are displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2,
+                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download details 2 are displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_BADGE, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_BADGE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download details blocked icon is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON,
+                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Open file button is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON,
+                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Remove file button is displayed."
 
         # Open the malicious file.
         if OSHelper.is_mac():
             malicious_file = Pattern("malicious_file_name.png")
             click(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON)
-            expected = exists(malicious_file, 10)
+            expected = exists(malicious_file, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected is True, "Malicious file is displayed."
             click_window_control("close")
 
-            expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+            expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected is True, "Download button found in the page."
 
             click(NavBar.DOWNLOADS_BUTTON)
@@ -97,12 +104,12 @@ class Test(FirefoxTest):
         else:
             click(DownloadManager.DownloadsPanel.DownloadDetails.DOWNLOADS_BACK_ARROW)
             hover(DownloadManager.SHOW_ALL_DOWNLOADS)
-            expected = exists(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD, 10)
+            expected = exists(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected is True, "'This file contains a virus or malware' message is displayed."
             right_click(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD)
 
         # Clear the download panel.
-        expected = exists(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY, 10)
+        expected = exists(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'Remove from history' option is available."
 
         click(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY)
@@ -134,7 +141,7 @@ class Test(FirefoxTest):
             expect_accept_download_available=download_available,
         )
 
-        expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, 10)
+        expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Malicious downloads button is displayed."
 
         # Remove the file from the download panel.
@@ -142,7 +149,8 @@ class Test(FirefoxTest):
 
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW)
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON,
+                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Remove file button is displayed."
 
         click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 1)
