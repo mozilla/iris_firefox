@@ -68,7 +68,7 @@ class DownloadFiles(object):
     FOLDER_VIEW_10MB_HIGHLIGHTED = Pattern("10MB_folder_view_highlighted.png").similar(0.79)
     FIREFOX_INSTALLER = Pattern("firefox_installer.png")
     FIREFOX_INSTALLER_HIGHLIGHTED = Pattern("firefox_installer_highlighted.png")
-    STATUS_200 = Pattern("status_200.png")
+    STATUS_200 = Pattern("status_200.png").similar(0.7)
 
     ABOUT = Pattern("about.png")
     SAVE_FILE = Pattern("save_file.png")
