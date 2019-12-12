@@ -21,9 +21,16 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
+
+        if OSHelper.is_windows():
+            download_available = False
+        else:
+            download_available = True
+
         navigate("https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/")
 
-        download_file(DownloadFiles.FIREFOX_INSTALLER.similar(0.8), DownloadFiles.OK)
+        download_file(DownloadFiles.FIREFOX_INSTALLER.similar(0.8), DownloadFiles.OK,
+                      expect_accept_download_available=download_available)
 
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE.similar(0.8), FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected is True, "Downloads button found."

@@ -23,7 +23,7 @@ class DownloadManager(object):
         OPEN_DOWNLOAD_FOLDER = Pattern("download_button_open_containing_folder.png")
         OPEN_CONTAINING_FOLDER = Pattern("open_containing_folder.png")
         TIME_LEFT = Pattern("time_left.png")
-        BYTES_SECOND = Pattern("bytes_second.png")
+        BYTES_SECOND = Pattern("bytes_second.png").similar(0.7)
         OF_1GB = Pattern("of_1gb.png")
         ADD_REMOVE_DOWNLOADS_ARROW = Pattern("download_add_remove_file_arrow.png")
         ADD_REMOVE_DOWNLOADS_RED_ARROW = Pattern("download_add_remove_file_red_arrow.png")
