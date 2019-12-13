@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         pdf_file_last_page_contents_rotated_pattern = Pattern("last_page_contents_rotated.png")
         rotate_counterclockwise_button_pattern = Pattern("rotate_counterclockwise_button.png").similar(0.6)
-        doc_properties_close_button_pattern = Pattern("document_properties_close_button.png").similar(0.5)
+        doc_properties_close_button_pattern = Pattern("document_properties_close_button.png").similar(0.6)
         document_properties_filename_pattern = Pattern("document_properties_info.png").similar(0.6)
         document_properties_button_pattern = Pattern("document_properties_button.png").similar(0.6)
         introduction_chapter_pattern = Pattern("introduction_chapter_headline.png")
@@ -38,7 +38,7 @@ class Test(FirefoxTest):
 
         region_top = Screen.TOP_THIRD
         region_right = Screen.RIGHT_HALF
-        region_bottom = Screen.BOTTOM_HALF
+        region_bottom = Screen.BOTTOM_THIRD
 
         pdf_file_path = self.get_asset_path("pdf.pdf")
         navigate(pdf_file_path)
