@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="3930",
         test_suite_id="65",
         locales=Locales.ENGLISH,
+        blocked_by={"id": "3930", "platform": OSPlatform.ALL}
     )
     def run(self, firefox):
         dialogue_window_cancel_button = History.ClearRecentHistory.CANCEL.similar(0.75)
