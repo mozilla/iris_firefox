@@ -82,6 +82,7 @@ class Test(FirefoxTest):
         assert restart_dialog_appeared, '"Restart firefox now" dialog window opened'
 
         click(restart_browser_pattern)
+        click(restart_browser_pattern.target_offset(20, 2))
 
         browser_closed = wait_vanish(NavBar.SIDEBAR_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_closed, "Browser is closed"
