@@ -167,5 +167,7 @@ class Test(FirefoxTest):
         paste("window.resizeTo(" + width + "," + height + ")")
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-        if OSHelper.is_mac():
-            click(Pattern("new_tab_icon.png"))
+        if OSHelper.is_linux():
+            type(text=Key.F4, modifier=KeyModifier.ALT)
+        click(Pattern('new_tab_icon.png'))
+        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
