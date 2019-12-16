@@ -56,10 +56,8 @@ class Test(FirefoxTest):
 
         close_content_blocking_pop_up()
 
-        if OSHelper.is_windows():  # to prevent pop-up covering pattern
-            type(Key.ESC)
-
-        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_content_pattern)
+        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_content_pattern,
+                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_tracker_site_logo_displayed, "The website is successfully displayed."
 
         tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern)
@@ -155,10 +153,8 @@ class Test(FirefoxTest):
 
         navigate("https://itisatrap.org/firefox/its-a-tracker.html")
 
-        if OSHelper.is_windows():  # to prevent pop-up covering pattern
-            type(Key.ESC)
-
-        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_content_pattern)
+        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_content_pattern,
+                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_tracker_site_logo_displayed, "The website is successfully displayed."
 
         tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern)
