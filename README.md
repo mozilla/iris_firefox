@@ -126,3 +126,4 @@ targets/firefox/bug_manager.py:16:1: E402 module level import not at top of file
 
 [INFO] Restored changes from /Users/ksereduck/.cache/pre-commit/patch1570121459.
 ```
+
