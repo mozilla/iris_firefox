@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         highlights_bookmark_github = Pattern('highlights_bookmark_github.png')
         highlights_bookmark_mozilla = Pattern('highlights_bookmark_mozilla.png')
         highlights_bookmark_google = Pattern('highlights_bookmark_google.png')
-        highlights_bookmark_firefox = Pattern('highlights_bookmark_firefox.png')
+        highlights_bookmark_slack = Pattern('highlights_bookmark_slack.png')
         highlights_bookmark_amazon = Pattern('highlights_bookmark_amazon.png')
         highlights_bookmark_outlook = Pattern('highlights_bookmark_outlook.png')
         highlights_bookmark_twitter = Pattern('highlights_bookmark_twitter.png')
@@ -40,7 +40,7 @@ class Test(FirefoxTest):
             'https://www.amazon.com/',
             'https://outlook.live.com/owa/',
             'https://twitter.com/',
-            'https://www.mozilla.org/en-US/firefox/new/',
+            'https://slack.com/',
             'https://www.google.com/',
             'https://github.com/',
             'https://www.mozilla.org/en-US/',
@@ -158,7 +158,7 @@ class Test(FirefoxTest):
             highlights_bookmark_mozilla,
             highlights_bookmark_github,
             highlights_bookmark_google,
-            highlights_bookmark_firefox,
+            highlights_bookmark_slack,
             highlights_bookmark_amazon,
             highlights_bookmark_outlook,
             highlights_bookmark_twitter
@@ -177,7 +177,7 @@ class Test(FirefoxTest):
             highlights_bookmark_mozilla,
             highlights_bookmark_github,
             highlights_bookmark_google,
-            highlights_bookmark_firefox,
+            highlights_bookmark_slack,
             highlights_bookmark_twitter
         ]
         self.resize_browser('1000', '700')
