@@ -37,8 +37,8 @@ class Test(FirefoxTest):
         tools_button_pattern = Pattern("tools_button.png").similar(0.6)
 
         region_top = Screen.TOP_THIRD
-        region_right = Screen.RIGHT_HALF
-        region_bottom = Screen.BOTTOM_THIRD
+        region_right = Screen.RIGHT_THIRD
+        region_bottom = Screen.BOTTOM_HALF
 
         pdf_file_path = self.get_asset_path("pdf.pdf")
         navigate(pdf_file_path)
