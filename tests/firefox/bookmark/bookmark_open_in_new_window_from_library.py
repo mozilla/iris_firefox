@@ -60,7 +60,12 @@ class Test(FirefoxTest):
         new_tab_exists = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
         assert new_tab_exists is False, "New tab is not displayed"
 
+        close_window()
+
         open_library()
+
+        library_opened = exists(Library.TITLE, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert library_opened is True, "Library opened"
 
         click(Library.TITLE)
         close_window_control("auxiliary")
