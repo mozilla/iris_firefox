@@ -20,6 +20,7 @@ class Test(FirefoxTest):
         related_video_pattern = Pattern("related_video.png")
         north_text_mark_pattern = Pattern("north_text_mark.png")
         cnn_weather_page_tab_pattern = Pattern("cnn_logo_tab.png")
+        accept_cookies_button_pattern = Pattern('accept_cookies_button.png')
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH / 2, home_height * 4)
@@ -37,6 +38,13 @@ class Test(FirefoxTest):
             cnn_weather_page_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT, tabs_region
         )
         assert cnn_weather_page_loaded is True, "The specified website is successfully loaded."
+
+        accept_cookies_displaying = exists(accept_cookies_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+
+        if accept_cookies_displaying:
+            assert accept_cookies_displaying, "Accept cookies displaying"
+
+            click(accept_cookies_button_pattern)
 
         video_playing = exists(speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert video_playing is True, "The video is playing and the speaker icon is displayed"
