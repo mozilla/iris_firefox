@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         related_video_pattern = Pattern("related_video.png")
         north_text_mark_pattern = Pattern("north_text_mark.png")
         cnn_weather_page_tab_pattern = Pattern("cnn_logo_tab.png")
-        accept_cookies_button_pattern =  Pattern('accept_cookies_button.png')
+        accept_cookies_button_pattern = Pattern('accept_cookies_button.png')
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH / 2, home_height * 4)
