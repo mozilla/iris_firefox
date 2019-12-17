@@ -8,7 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Check for Dark and Light themes.", locale=["en-US"], test_case_id="15266", test_suite_id="494"
+        description="Check for Dark and Light themes.",
+        locale=["en-US"],
+        blocked_by={"id": "4422", "platform": OSPlatform.LINUX},
+        test_case_id="15266",
+        test_suite_id="494"
     )
     def run(self, firefox):
         for i in range(2):
@@ -16,18 +20,21 @@ class Test(FirefoxTest):
                 new_private_window()
             open_addons()
 
-            expected = exists(AboutAddons.THEMES, 10)
-            assert expected is True, "Add-ons page successfully loaded."
+            expected = exists(AboutAddons.THEMES, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert expected, "Add-ons page couldn't be loaded."
 
             click(AboutAddons.THEMES)
 
-            expected = exists(AboutAddons.Themes.DARK_THEME, 10)
-            assert expected is True, "Dark theme option found in the page."
+            expected = exists(AboutAddons.Themes.DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert expected, "Default theme option not found in the page."
 
-            expected = exists(AboutAddons.Themes.LIGHT_THEME, 10)
-            assert expected is True, "Dark theme option found in the page."
+            expected = exists(AboutAddons.Themes.DARK_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert expected, "Dark theme option not found in the page."
 
-            expected = exists(AboutAddons.Themes.DEFAULT_THEME, 10)
-            assert expected is True, "Dark theme option found in the page."
+            if OSHelper.is_mac():
+                click(Pattern("disabled_theme_header.png"))
+                type(Key.DOWN)
+            expected = exists(AboutAddons.Themes.LIGHT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert expected, "Light theme option not found in the page."
 
         close_window()
