@@ -40,9 +40,11 @@ class Test(FirefoxTest):
         assert cnn_weather_page_loaded is True, "The specified website is successfully loaded."
 
         accept_cookies_displaying = exists(accept_cookies_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert accept_cookies_displaying, "Accept cookies displaying"
 
-        click(accept_cookies_button_pattern)
+        if accept_cookies_displaying:
+            assert accept_cookies_displaying, "Accept cookies displaying"
+
+            click(accept_cookies_button_pattern)
 
         video_playing = exists(speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert video_playing is True, "The video is playing and the speaker icon is displayed"
