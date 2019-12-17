@@ -39,7 +39,7 @@ class Test(FirefoxTest):
         assert expected is True, "The 'X' button is highlighted properly."
 
         # Click the 'X' button.
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED)
+        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED.similar(0.75),1)
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The Retry button is highlighted properly."
 
