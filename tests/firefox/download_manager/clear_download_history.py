@@ -32,39 +32,36 @@ class Test(FirefoxTest):
             file_index = download_files_list.index(pattern)
 
             if file_index == 0:
-                expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+                expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
                 assert expected is True, "Download button found in the page."
 
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
-        # Open the Downloads Panel and select Show All Downloads.
-        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
-        assert expected is True, "'Downloads' button found."
-        mouse.move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
-        click(NavBar.DOWNLOADS_BUTTON_BLUE)
+        click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
 
-        expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)
+        expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'Show all downloads' button found."
         click(DownloadManager.SHOW_ALL_DOWNLOADS)
 
-        expected = exists(Library.DOWNLOADS, 10)
+        expected = exists(Library.DOWNLOADS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The Downloads button is displayed in the Library."
         click(Library.DOWNLOADS)
 
         # Check that all the downloads are successful and displayed in the Downloads category.
         for pattern in downloads_library_list:
-            expected = exists(pattern, 10)
+            expected = exists(pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected is True, "%s file found in the Library, Downloads section." % str(
                 pattern.get_filename()
             ).replace("_library_downloads.png", "")
 
-        right_click(DownloadFiles.LIBRARY_DOWNLOADS_5MB)
+        right_click(DownloadFiles.LIBRARY_DOWNLOADS_10MB)
+        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
         type(text="d")
 
         # Check that all the downloads are removed from the Library.
         for pattern in downloads_library_list:
             try:
-                expected = wait_vanish(pattern, 5)
+                expected = wait_vanish(pattern, FirefoxSettings.FIREFOX_TIMEOUT)
                 assert expected is True, "%s file not found in the Library, Downloads section." % str(
                     pattern.get_filename()
                 ).replace("_library_downloads.png", "")
@@ -75,7 +72,7 @@ class Test(FirefoxTest):
 
         # Check that there are no downloads displayed in the 'about:downloads' page.
         navigate("about:downloads")
-        expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, 10)
+        expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "There are no downloads displayed in the 'about:downloads' page."
 
     def teardown(self):

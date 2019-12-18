@@ -83,4 +83,5 @@ class LocalWeb(object):
     IRIS_LOGO_INACTIVE_TAB = Pattern("iris_logo_inactive_tab.png")
 
     """Download site"""
-    DOWNLOAD_TEST_SITE = "https://irisfirefoxtestfiles.netlify.com"
+    DOWNLOAD_TEST_SITE = 'http://%s:%s/thinkbroadband/' % (_ip_host, _port)
+

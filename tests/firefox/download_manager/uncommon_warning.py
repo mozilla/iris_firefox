@@ -24,13 +24,19 @@ class Test(FirefoxTest):
     def run(self, firefox):
         uncommon_file_download_library = Pattern("uncommon_file_download_library.png")
 
+        if OSHelper.is_windows():
+            download_available = False
+        else:
+            download_available = True
+
         navigate("https://testsafebrowsing.appspot.com")
 
         expected = exists(DownloadFiles.UNCOMMON_HTTPS, 10)
         assert expected is True, "Uncommon file has been found."
 
         width, height = DownloadFiles.UNCOMMON_HTTPS.get_size()
-        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=download_available)
 
         expected = exists(DownloadManager.DownloadsPanel.UNCOMMON_DOWNLOAD_ICON, 10)
         assert expected is True, "Uncommon download icon is displayed."
@@ -106,7 +112,8 @@ class Test(FirefoxTest):
         close_tab()
 
         # Repeat steps 1-4 and click on Remove file.
-        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=download_available)
 
         expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, 10)
         assert expected is True, "Uncommon downloads button is displayed."

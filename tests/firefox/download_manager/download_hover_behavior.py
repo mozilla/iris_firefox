@@ -23,30 +23,32 @@ class Test(FirefoxTest):
     def run(self, firefox):
         navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
+        select_throttling(NetworkOption.GPRS)
+
         download_file(DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.OK)
 
-        expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+        expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Downloads button found."
 
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The 'X' button is properly displayed."
 
         # Hover the 'X' button.
         hover(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The 'X' button is highlighted properly."
 
         # Click the 'X' button.
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED)
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY_HIGHLIGHTED, 10)
+        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED.similar(0.75),1)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The Retry button is highlighted properly."
 
-        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The downloaded file name is properly displayed."
 
         # Hover the file name.
         hover(DownloadFiles.DOWNLOAD_FILE_NAME_1GB)
-        expected = exists(DownloadFiles.DOWNLOAD_CANCELLED, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_CANCELLED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The status and the source page are properly displayed when hovering the downloaded"
         " file name."
 

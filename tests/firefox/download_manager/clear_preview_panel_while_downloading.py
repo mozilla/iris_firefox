@@ -53,7 +53,9 @@ class Test(FirefoxTest):
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
         # Open the Downloads Panel.
-        click(NavBar.DOWNLOADS_BUTTON)
+        download_button_found = exists(NavBar.DOWNLOADS_BUTTON.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
+        assert download_button_found, "Download button couldn't find in the page."
+        click(NavBar.DOWNLOADS_BUTTON.similar(0.7))
 
         # Check that the 5MB download is complete.
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED, 90)

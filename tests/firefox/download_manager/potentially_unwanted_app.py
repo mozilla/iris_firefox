@@ -19,6 +19,7 @@ class Test(FirefoxTest):
             "browser.download.folderList": 2,
             "browser.download.useDownloadDir": True,
             "browser.warnOnQuit": False,
+            "browser.download.autohideButton": False,
         },
     )
     def run(self, firefox):
@@ -37,44 +38,50 @@ class Test(FirefoxTest):
             expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
         )
 
-        expected = exists(DownloadManager.DownloadsPanel.UNWANTED_DOWNLOAD_ICON, 10)
+        expected = exists(DownloadManager.DownloadsPanel.UNWANTED_DOWNLOAD_ICON, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Unwanted download icon is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.UNWANTED_DOWNLOAD, 10)
+        expected = exists(DownloadManager.DownloadsPanel.UNWANTED_DOWNLOAD, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Potentially unwanted message is displayed."
 
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_ARROW)
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.HEADER, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.HEADER, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Download details header is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_DOWNLOAD_TITLE, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_DOWNLOAD_TITLE,
+                          FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Download details title is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_DETAILS_1, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_DETAILS_1,
+                          FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Download details 1 are displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2,
+                          FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Download details 2 are displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_BADGE, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_BADGE,
+                          FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Download details unwanted icon is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON,
+                          FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Open file button is displayed."
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON,
+                          FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Remove file button is displayed."
 
         # Open the unwanted file.
         if OSHelper.is_mac():
             potentially_unwanted_file = Pattern("potentially_unwanted_file_name.png")
             click(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON)
-            expected = exists(potentially_unwanted_file, 10)
+            expected = exists(potentially_unwanted_file, FirefoxSettings.SITE_LOAD_TIMEOUT)
             assert expected is True, "Unwanted file is displayed."
             click_window_control("close")
 
-            expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+            expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT)
             assert expected is True, "Download button found in the page."
 
             click(NavBar.DOWNLOADS_BUTTON)
@@ -85,7 +92,7 @@ class Test(FirefoxTest):
             right_click(DownloadManager.DownloadsPanel.UNWANTED_DOWNLOAD)
 
         # Clear the download panel.
-        expected = exists(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY, 10)
+        expected = exists(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "'Remove from history' option is available."
 
         click(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY)
@@ -115,7 +122,7 @@ class Test(FirefoxTest):
             expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
         )
 
-        expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, 10)
+        expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Uncommon downloads button is displayed."
 
         # Remove the file from the download panel.
@@ -123,7 +130,8 @@ class Test(FirefoxTest):
 
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_ARROW)
 
-        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON,
+                          FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Remove file button is displayed."
 
         click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 1)

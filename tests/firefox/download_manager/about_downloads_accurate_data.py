@@ -45,19 +45,19 @@ class Test(FirefoxTest):
             file_index = download_files_list.index(pattern)
 
             if file_index == 0:
-                expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+                expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT)
                 assert expected is True, "Download button found in the page."
 
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
         # Open the Library - Downloads section.
         open_downloads()
-        expected = exists(Library.TITLE, 10)
+        expected = exists(Library.TITLE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Library successfully opened."
 
         # Check that all the downloads are successful and displayed in the Downloads category from the Library.
         for pattern in downloads_library_list:
-            expected = exists(pattern, 10)
+            expected = exists(pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
             assert expected is True, "%s file found in the Library, Downloads section." % str(pattern.get_filename())
 
         click_window_control("close")
