@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         test_case_id="159259",
         test_suite_id="2241",
         locale=["en-US"],
-        blocked_by={"id": "4420", "platform": OSPlatform.ALL}
     )
     def run(self, firefox):
         browser_privacy_hover_pattern = Pattern("browser_privacy_hover.png")
@@ -20,6 +19,8 @@ class Test(FirefoxTest):
         popup_blocked_pattern = Pattern("popups_blocked_message.png")
         facebook_login_pattern = Pattern("facebook_login_icon.png")
         facebook_login_window_pattern = Pattern("facebook_login_popup.png")
+        log_in_button_pattern = Pattern("log_in_button.png")
+        pinterest_tab_pattern = Pattern("pinterest_tab.png")
 
         scroll_length = Screen.SCREEN_WIDTH // 3
         if OSHelper.is_linux():
@@ -42,8 +43,16 @@ class Test(FirefoxTest):
 
         navigate("pinterest.com")
 
+        site_loaded = exists(pinterest_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert site_loaded, "Site is loaded"
+
+        log_in_button_exists = exists(log_in_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert log_in_button_exists, "Login is available"
+
+        click(log_in_button_pattern)
+
         facebook_login_is_available = exists(facebook_login_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert facebook_login_is_available, "Website is opened"
+        assert facebook_login_is_available, "Login via facebook is available"
 
         click(facebook_login_pattern)
 
@@ -58,8 +67,16 @@ class Test(FirefoxTest):
         next_tab()
         click(NavBar.RELOAD_BUTTON)
 
+        site_reloaded = exists(pinterest_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert site_reloaded, "Site is loaded"
+
+        log_in_button_exists = exists(log_in_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert log_in_button_exists, "Login is available"
+
+        click(log_in_button_pattern)
+
         facebook_login_is_available = exists(facebook_login_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert facebook_login_is_available, "Website is opened"
+        assert facebook_login_is_available, "Login via facebook is available"
 
         click(facebook_login_pattern)
 
