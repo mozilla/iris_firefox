@@ -14,11 +14,11 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        search_using_google_pattern = Pattern("search_using_google.png")
         duckduckgo_search_bar_pattern = Pattern("duckduckgo_search_bar.png").similar(0.6)
         search_duckduckgo_hover_pattern = Pattern("search_duckduckgo.png")
         bing_search_engine_pattern = Pattern("bing_search_engine.png").similar(0.7)
         google_search_engine_pattern = Pattern("google_search_engine.png")
+        duckduckgo_search_selected_pattern = Pattern("duckduckgo_search_selected.png")
 
         # Enable the search bar.
         change_preference("browser.search.widget.inNavBar", True)
@@ -81,10 +81,10 @@ class Test(FirefoxTest):
         for _ in range(3):
             type(Key.TAB)
 
-        duckduckgo_search_bar_hovered = exists(
-            duckduckgo_search_bar_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT, search_bar_region
+        duckduckgo_search_bar_selected_by_tab_press = exists(
+            duckduckgo_search_selected_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT, search_bar_region
         )
-        assert duckduckgo_search_bar_hovered is False, (
+        assert duckduckgo_search_bar_selected_by_tab_press, (
             "Pressing tab selects the one-click search engines while " "the search suggestions are skipped."
         )
 
