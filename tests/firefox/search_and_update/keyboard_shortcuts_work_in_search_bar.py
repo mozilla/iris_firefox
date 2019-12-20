@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="4278",
         test_suite_id="83",
+        blocked_by={"id": "4278", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]}
     )
     def run(self, firefox):
         duckduckgo_search_bar_pattern = Pattern("duckduckgo_search_bar.png").similar(0.6)
