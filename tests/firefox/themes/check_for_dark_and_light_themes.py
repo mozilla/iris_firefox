@@ -17,6 +17,8 @@ class Test(FirefoxTest):
         for i in range(2):
             if i == 1:
                 new_private_window()
+                if OSHelper.is_linux():
+                    navigate("about:addons")
             open_hamburger_menu('Add-ons')
 
             expected = exists(AboutAddons.THEMES, FirefoxSettings.FIREFOX_TIMEOUT)
