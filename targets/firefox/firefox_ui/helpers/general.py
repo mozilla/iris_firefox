@@ -684,6 +684,7 @@ def open_hamburger_menu(option):
     """
 
     option_list = ['Restore Previous Session',
+                   'Add-ons',
                    'Customize',
                    'Print',
                    'Web Developer',
@@ -712,6 +713,11 @@ def open_hamburger_menu(option):
                                                FirefoxSettings.FIREFOX_TIMEOUT)
                 assert restore_option_exists, "Restore option exists is hamburger menu."
                 click(HamburgerMenu.RESTORE_PREVIOUS_SESSION)
+            elif option == "Add-ons":
+                add_ons_option_exists = exists(HamburgerMenu.ADDONS,
+                                                 FirefoxSettings.FIREFOX_TIMEOUT)
+                assert add_ons_option_exists, "Add-ons option exists is hamburger menu."
+                click(HamburgerMenu.ADDONS)
             elif option == "Customize":
                 customize_option_exists = exists(HamburgerMenu.CUSTOMIZE,
                                                  FirefoxSettings.FIREFOX_TIMEOUT)

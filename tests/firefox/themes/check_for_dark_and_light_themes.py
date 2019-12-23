@@ -10,7 +10,6 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description="Check for Dark and Light themes.",
         locale=["en-US"],
-        blocked_by={"id": "4422", "platform": OSPlatform.LINUX},
         test_case_id="15266",
         test_suite_id="494"
     )
@@ -18,7 +17,7 @@ class Test(FirefoxTest):
         for i in range(2):
             if i == 1:
                 new_private_window()
-            open_addons()
+            open_hamburger_menu('Add-ons')
 
             expected = exists(AboutAddons.THEMES, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected, "Add-ons page couldn't be loaded."
