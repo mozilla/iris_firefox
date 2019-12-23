@@ -83,12 +83,7 @@ class Test(FirefoxTest):
         for i in range(2):
             type(Key.DOWN)
 
-        if OSHelper.is_windows() or OSHelper.is_linux():
-            type(Key.DELETE)
-        else:
-            key_down(Key.SHIFT)
-            type(Key.DELETE)
-            key_up(Key.SHIFT)
+        type(Key.DELETE, KeyModifier.SHIFT)
 
         try:
             expected = region.wait_vanish(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
