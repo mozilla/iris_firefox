@@ -40,13 +40,11 @@ class Test(FirefoxTest):
 
         click(advanced_button_pattern)
 
-        proportional_dropdown_exists = exists(proportional_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        proportional_dropdown_exists = exists(proportional_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                              Screen.MIDDLE_THIRD_VERTICAL)
         assert proportional_dropdown_exists, "Proportional drop is available"
 
-        if OSHelper.is_mac():
-            click(proportional_dropdown_pattern)
-        else:
-            type(Key.TAB)
+        click(proportional_dropdown_pattern, region=Screen.MIDDLE_THIRD_VERTICAL)
 
         type(Key.DOWN)
         type(Key.ENTER)
