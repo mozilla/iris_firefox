@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_suite_id="68",
         locales=Locales.ENGLISH,
         profile=Profiles.BRAND_NEW,
-        preferences={"browser.warnOnQuit": False, },
+        preferences={"browser.warnOnQuit": False}
     )
     def run(self, firefox):
         new_tab()
@@ -27,6 +27,7 @@ class Test(FirefoxTest):
         assert website_two_loaded, "Page 2 successfully loaded, mozilla logo found."
 
         firefox.restart()
+        type(Key.ESC)  # to prevent asking to make firefox default browser
 
         open_hamburger_menu("Restore Previous Session")
 
