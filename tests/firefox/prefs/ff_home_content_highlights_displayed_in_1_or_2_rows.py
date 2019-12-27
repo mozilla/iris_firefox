@@ -20,14 +20,14 @@ class Test(FirefoxTest):
         highlights_no_of_row_drop_down_1_row = Pattern('home_top_sites_most_visit_default_value.png')
         top_site_option = Pattern('top_sites_option.png')
         web_search_options = Pattern('web_search_options.png')
-        highlights_bookmark_facebook = Pattern('highlights_bookmark_facebook.png')
-        highlights_bookmark_github = Pattern('highlights_bookmark_github.png')
-        highlights_bookmark_mozilla = Pattern('highlights_bookmark_mozilla.png')
-        highlights_bookmark_google = Pattern('highlights_bookmark_google.png')
-        highlights_bookmark_slack = Pattern('highlights_bookmark_slack.png')
-        highlights_bookmark_amazon = Pattern('highlights_bookmark_amazon.png')
-        highlights_bookmark_outlook = Pattern('highlights_bookmark_outlook.png')
-        highlights_bookmark_twitter = Pattern('highlights_bookmark_twitter.png')
+        highlights_bookmark_soap = Pattern('highlights_bookmark_soap_test_site.png')
+        highlights_bookmark_firefox = Pattern('highlights_bookmark_firefox_test_site.png')
+        highlights_bookmark_focus = Pattern('highlights_bookmark_focus_test_site.png')
+        highlights_bookmark_mozilla_1 = Pattern('highlights_bookmark_mozilla_test_site_1.png').similar(0.7)
+        highlights_bookmark_download = Pattern('highlights_bookmark_download_test_site.png')
+        highlights_bookmark_pocket_1 = Pattern('highlights_bookmark_pocket_test_site_1.png')
+        highlights_bookmark_mozilla_2 = Pattern('highlights_bookmark_mozilla_test_site_2.png')
+        highlights_bookmark_pocket_2 = Pattern('highlights_bookmark_pocket_test_site_2.png')
         cross_mark_on_footer_message = Pattern('cross_mark_on_footer_message.png')
         optional_footer_message_from_firefox = Pattern('optional_footer_message_from_firefox.png')
 
@@ -37,14 +37,14 @@ class Test(FirefoxTest):
             highlights_options_pattern = Pattern("highlights_option.png")
 
         bookmark_sites_url = [
-            'https://www.amazon.com/',
-            'https://outlook.live.com/owa/',
-            'https://twitter.com/',
-            'https://slack.com/',
-            'https://www.google.com/',
-            'https://github.com/',
-            'https://www.mozilla.org/en-US/',
-            'https://www.facebook.com/',
+            LocalWeb.POCKET_TEST_SITE_2,
+            LocalWeb.MOZILLA_TEST_SITE_2,
+            LocalWeb.POCKET_TEST_SITE,
+            LocalWeb.DOWNLOAD_TEST_SITE,
+            LocalWeb.MOZILLA_TEST_SITE,
+            LocalWeb.FOCUS_TEST_SITE,
+            LocalWeb.FIREFOX_TEST_SITE,
+            LocalWeb.SOAP_WIKI_TEST_SITE,
         ]
         # Create bookmarks
         for site in bookmark_sites_url:
@@ -112,12 +112,13 @@ class Test(FirefoxTest):
                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert home_page_highlights_pattern_found, "The Highlights section is not displayed on the Homepage."
 
-        highlights_region_1_row_4_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 5.5, 4.5)
+        highlights_region_1_row_4_cells = self.region_creation_highlights(highlights_bookmark_soap, 2, 3.25, 5.5,
+                                                                          4.5)
         bookmark_sites_default_view_1_row = [
-            highlights_bookmark_facebook,
-            highlights_bookmark_mozilla,
-            highlights_bookmark_github,
-            highlights_bookmark_google
+            highlights_bookmark_soap,
+            highlights_bookmark_focus,
+            highlights_bookmark_firefox,
+            highlights_bookmark_mozilla_1
         ]
         for site in bookmark_sites_default_view_1_row:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
@@ -126,13 +127,14 @@ class Test(FirefoxTest):
                 "{} image is not displayed in default highlight view when number of row is 1 with 4 cells".format(site)
 
         bookmark_sites_highlights_reduced_view_3_cells = [
-            highlights_bookmark_facebook,
-            highlights_bookmark_mozilla,
-            highlights_bookmark_github
+            highlights_bookmark_soap,
+            highlights_bookmark_focus,
+            highlights_bookmark_firefox
         ]
         self.resize_browser('1000', '700')
 
-        highlights_region_1_row_3_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 4.125, 4.5)
+        highlights_region_1_row_3_cells = self.region_creation_highlights(highlights_bookmark_soap, 2, 3.25, 4.125,
+                                                                          4.5)
         for site in bookmark_sites_highlights_reduced_view_3_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_1_row_3_cells)
@@ -141,7 +143,8 @@ class Test(FirefoxTest):
 
         self.resize_browser('750', '800')
 
-        highlights_region_2_rows_3_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 2.75, 9)
+        highlights_region_2_rows_3_cells = self.region_creation_highlights(highlights_bookmark_soap, 2, 3.25, 2.75,
+                                                                           9)
         for site in bookmark_sites_highlights_reduced_view_3_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_2_rows_3_cells)
@@ -154,17 +157,18 @@ class Test(FirefoxTest):
         previous_tab()
 
         bookmark_sites_modified_view_8_cells = [
-            highlights_bookmark_facebook,
-            highlights_bookmark_mozilla,
-            highlights_bookmark_github,
-            highlights_bookmark_google,
-            highlights_bookmark_slack,
-            highlights_bookmark_amazon,
-            highlights_bookmark_outlook,
-            highlights_bookmark_twitter
+            highlights_bookmark_soap,
+            highlights_bookmark_focus,
+            highlights_bookmark_firefox,
+            highlights_bookmark_mozilla_1,
+            highlights_bookmark_download,
+            highlights_bookmark_pocket_1,
+            highlights_bookmark_mozilla_2,
+            highlights_bookmark_pocket_2
         ]
 
-        highlights_region_2_rows_8_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 5.5, 9)
+        highlights_region_2_rows_8_cells = self.region_creation_highlights(highlights_bookmark_soap, 2, 3.25, 5.5,
+                                                                           9)
         for site in bookmark_sites_modified_view_8_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_2_rows_8_cells)
@@ -173,15 +177,16 @@ class Test(FirefoxTest):
                 "when number of rows are 2 with 8 cells".format(site)
 
         bookmark_sites_modified_view_6_cells = [
-            highlights_bookmark_facebook,
-            highlights_bookmark_mozilla,
-            highlights_bookmark_github,
-            highlights_bookmark_google,
-            highlights_bookmark_slack,
-            highlights_bookmark_twitter
+            highlights_bookmark_soap,
+            highlights_bookmark_focus,
+            highlights_bookmark_firefox,
+            highlights_bookmark_mozilla_1,
+            highlights_bookmark_download,
+            highlights_bookmark_pocket_1
         ]
         self.resize_browser('1000', '700')
-        highlights_region_2_rows_6_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 4.125, 9)
+        highlights_region_2_rows_6_cells = self.region_creation_highlights(highlights_bookmark_soap, 2, 3.25, 4.125,
+                                                                           9)
         for site in bookmark_sites_modified_view_6_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_2_rows_6_cells)
@@ -207,7 +212,7 @@ class Test(FirefoxTest):
                 click(cross_mark_on_footer_message, region=footer_message_region)
         type(Key.DOWN)
         type(Key.DOWN)
-        highlights_region_3_rows_6_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 1, 3.25, 13)
+        highlights_region_3_rows_6_cells = self.region_creation_highlights(highlights_bookmark_soap, 2, 1, 3.25, 13)
         for site in bookmark_sites_modified_view_6_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_3_rows_6_cells)
