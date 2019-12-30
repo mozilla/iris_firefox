@@ -21,6 +21,7 @@ class Test(FirefoxTest):
         downloads_tab_url = Pattern("downloads_tab_url.png")
         downloads_tab_pattern = Pattern("downloads_tab.png")
         pref_tab_pattern = Pattern("pref_tab.png")
+        drag_and_drop_duration = 2
 
         navigate("about:preferences#home")
         preference_home_tab_image = exists(home_preference_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -36,14 +37,14 @@ class Test(FirefoxTest):
 
         tab_location = find(mozilla_tab_pattern)
         drop_location = find(downloads_tab_pattern)
-        drag_drop(tab_location, drop_location)
+        drag_drop(tab_location, drop_location, duration=drag_and_drop_duration)
         pref_tab_location = find(pref_tab_pattern)
         mozilla_tab_location = find(mozilla_tab_pattern)
         downloads_tab_location = find(downloads_tab_pattern)
 
         pref_tab_width, pref_tab_height = pref_tab_pattern.get_size()
-        first_reorder_window_region = Region(pref_tab_location.x - pref_tab_width/4,
-                                             pref_tab_location.y - pref_tab_height/4,
+        first_reorder_window_region = Region(pref_tab_location.x - pref_tab_width / 4,
+                                             pref_tab_location.y - pref_tab_height / 4,
                                              pref_tab_width * 3.5,
                                              pref_tab_height * 1.5
                                              )
@@ -64,20 +65,19 @@ class Test(FirefoxTest):
         controls_location = find(new_tab_image_pattern)
         x_coord = controls_location.x
         y_coord = controls_location.y
-        drag_start = Location(x_coord + 400, y_coord+5)
+        drag_start = Location(x_coord + 400, y_coord + 5)
         drag_end = Location(x_coord + 700, y_coord + 200)
-        drag_drop(drag_start, drag_end)
-
+        drag_drop(drag_start, drag_end, duration=drag_and_drop_duration)
 
         tab_location = find(new_tab_image_pattern)
         drop_location = find(mozilla_tab_pattern)
-        drag_drop(tab_location, drop_location, duration=0.5)
+        drag_drop(tab_location, drop_location, duration=drag_and_drop_duration)
         pref_tab_width, pref_tab_height = pref_tab_pattern.get_size()
 
-        second_reorder_window_region = Region(pref_tab_location.x-pref_tab_width/4,
-                                              pref_tab_location.y-pref_tab_height/4,
+        second_reorder_window_region = Region(pref_tab_location.x - pref_tab_width / 4,
+                                              pref_tab_location.y - pref_tab_height / 4,
                                               pref_tab_width * 3.5,
-                                              pref_tab_height*1.5
+                                              pref_tab_height * 1.5
                                               )
 
         new_tab_image = exists(new_tab_image_pattern, FirefoxSettings.FIREFOX_TIMEOUT, second_reorder_window_region)
