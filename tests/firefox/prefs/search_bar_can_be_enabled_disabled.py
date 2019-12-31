@@ -11,8 +11,7 @@ class Test(FirefoxTest):
         description="Firefox Home Content - Search bar can be enabled/disabled",
         test_case_id="161665",
         test_suite_id="2241",
-        locale=["en-US"],
-        blocked_by={"id": "4304", "platform": OSPlatform.ALL}
+        locale=["en-US"]
     )
     def run(self, firefox):
         web_search_options_pattern = Pattern("web_search_options.png")
@@ -70,17 +69,20 @@ class Test(FirefoxTest):
 
         navigate("about:home")
 
-        google_logo_content_search_field = exists(google_logo_content_search_field_pattern)
+        google_logo_content_search_field = exists(google_logo_content_search_field_pattern,
+                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_logo_content_search_field is False, "The search bar is not displayed anymore on the Home page."
 
         navigate("about:newtab")
 
-        google_logo_content_search_field = exists(google_logo_content_search_field_pattern)
+        google_logo_content_search_field = exists(google_logo_content_search_field_pattern,
+                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_logo_content_search_field is False, "The search bar is not displayed anymore on the New Tab page."
 
         new_window()
 
-        google_logo_content_search_field = exists(google_logo_content_search_field_pattern)
+        google_logo_content_search_field = exists(google_logo_content_search_field_pattern,
+                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_logo_content_search_field is False, "The search bar is not displayed anymore in the New Window."
 
         new_private_window()
@@ -89,6 +91,6 @@ class Test(FirefoxTest):
         assert private_window_opened, "Private window opened"
 
         google_logo_content_search_field = exists(google_logo_content_search_field_pattern)
-        assert google_logo_content_search_field is False, (
+        assert google_logo_content_search_field, (
             "The search bar is not displayed anymore in the New " "Private Window."
         )
