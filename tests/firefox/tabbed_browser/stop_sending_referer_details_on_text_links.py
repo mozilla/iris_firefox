@@ -36,7 +36,10 @@ class Test(FirefoxTest):
             "'https://www.whatismyreferer.com/' link not found in RAW paste data text area "
 
         click(what_is_my_referer_link_pattern)
-        type("a", KeyModifier.CTRL)
+        if OSHelper. is_mac():
+            type("a", KeyModifier.CMD)
+        else:
+            type("a", KeyModifier.CTRL)
 
         selected_link_expected = exists(what_is_my_referer_link_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert selected_link_expected, "'https://www.whatismyreferer.com/' link not selected"
