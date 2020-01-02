@@ -40,7 +40,7 @@ core_args = get_core_args()
 
 class Target(BaseTarget):
     test_run_object_list = []
-    index = 1
+    index = 0
     total_tests = None
 
     def __init__(self):
@@ -311,7 +311,7 @@ class Target(BaseTarget):
                 logger.debug(Target.completed_tests[-1].file_name)
                 logger.debug(request.node.fspath)
                 is_rerun = True
-        if not is_rerun and len(Target.completed_tests) > 0:
+        if not is_rerun:
             logger.debug("Incrementing index")
             Target.index += 1
 
