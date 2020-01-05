@@ -71,19 +71,17 @@ class Test(FirefoxTest):
             assert theme_enabled, "Unable to apply {}.".format(theme)
 
             drag_tab_location = find(iris_tab)
-            iris_tab_width, iris_tab_height = iris_tab.get_size()
             previous_tab()
             if theme_label == AboutAddons.Themes.DARK_THEME:
                 drop_tab_location = find(addons_manager_dark_tab_pattern)
             else:
                 drop_tab_location = find(addons_manager_light_tab__pattern)
-            drag_drop(drag_tab_location.offset(iris_tab_width/4, iris_tab_height/4), drop_tab_location)
-
+            drag_drop(drag_tab_location, drop_tab_location, duration=1)
+            wait(iris_tab)
+            iris_tab_location = find(iris_tab)
             if theme_label == AboutAddons.Themes.LIGHT_THEME:
-                iris_tab_location = find(iris_tab)
                 addons_manager_tab_location = find(addons_manager_light_tab__pattern)
             elif theme_label == AboutAddons.Themes.DEFAULT_THEME:
-                iris_tab_location = find(iris_tab_default_theme)
                 addons_manager_tab_location = find(addons_manager_dark_tab_pattern)
 
             addons_manager_tab_width, addons_manager_tab_height = addons_manager_light_tab__pattern.get_size()
@@ -91,11 +89,8 @@ class Test(FirefoxTest):
                                   addons_manager_tab_location.y - addons_manager_tab_height / 2,
                                   Screen.SCREEN_WIDTH,
                                   addons_manager_tab_height * 2)
-            if theme_label == AboutAddons.Themes.LIGHT_THEME:
-                iris_tab_expected = exists(iris_tab, FirefoxSettings.FIREFOX_TIMEOUT, reorder_tabs)
-            elif theme_label == AboutAddons.Themes.DEFAULT_THEME:
-                iris_tab_expected = exists(iris_tab_default_theme,
-                                           FirefoxSettings.FIREFOX_TIMEOUT, reorder_tabs)
+
+            iris_tab_expected = exists(iris_tab, FirefoxSettings.FIREFOX_TIMEOUT, reorder_tabs)
             assert iris_tab_expected, "Iris tab not found in the {}.".format(theme)
 
             # Validate status of drag & drop tabs
