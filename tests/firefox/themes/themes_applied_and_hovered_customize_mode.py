@@ -34,6 +34,7 @@ class Test(FirefoxTest):
         dark_search_icon_pattern = Pattern("dark_search_icon.png")
         dark_print_icon_pattern = Pattern("dark_print_icon.png")
         dark_history_icon_pattern = Pattern("dark_history_icon.png")
+        drag_and_drop_duration = 2
 
         open_hamburger_menu('Customize')
 
@@ -62,7 +63,6 @@ class Test(FirefoxTest):
         default_theme_location = find(default_theme_pattern)
         light_theme_location = find(light_theme_location)
         dark_theme_location = find(dark_theme_pattern)
-
         theme_location_list = [default_theme_location, light_theme_location, dark_theme_location]
         hover_message_list = [default_theme_hover_message_pattern, light_hover_message_pattern,
                               dark_hover_message_pattern]
@@ -93,7 +93,8 @@ class Test(FirefoxTest):
                          dark_theme_highlighted_pattern,
                          "Dark theme"
                          )
-
+        done_button_exist = exists(done_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert done_button_exist, "Could not find 'Done' button"
         click(done_button_pattern)
 
         dark_hamburger_exist = exists(NavBar.HAMBURGER_MENU_DARK_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -107,6 +108,8 @@ class Test(FirefoxTest):
         customize_page_exists = exists(dark_theme_doorhanger_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert customize_page_exists, "Could not open customize page"
 
+        download_icon_exists = exists(dark_download_icon_pattern,FirefoxSettings.FIREFOX_TIMEOUT,)
+        assert download_icon_exists, "Could not find dark download icon"
         download_icon_location = find(dark_download_icon_pattern)
         nav_width, nav_height = dark_download_icon_pattern.get_size()
         toolbar_region = Region(download_icon_location.x - nav_width * 10,
@@ -118,10 +121,13 @@ class Test(FirefoxTest):
         palette_items = [dark_developer_tool_icon_pattern, dark_preferences_icon_pattern, dark_search_icon_pattern,
                          dark_print_icon_pattern, dark_history_icon_pattern]
         for item in palette_items:
-            developer_icon_location = find(item)
-            drag_drop(developer_icon_location, download_icon_location)
+            icon_exists = exists(item, FirefoxSettings.FIREFOX_TIMEOUT)
+            icon_name = item.get_filename().split('.')[0].replace('_',' ')
+            assert icon_exists, f"Could find {icon_name} in palette"
+            icon_location = find(item)
+            drag_drop(icon_location, download_icon_location, duration=drag_and_drop_duration)
             drop_location_exists = exists(item, FirefoxSettings.FIREFOX_TIMEOUT, toolbar_region)
-            assert drop_location_exists, "Could not drag and drop {} in Navigation toolbar".format(item.get_filename())
+            assert drop_location_exists, f"Could not drag and drop {icon_name} in Navigation toolbar"
 
         click(Customize.RESTORE_DEFAULTS)
 
@@ -129,6 +135,8 @@ class Test(FirefoxTest):
         default_theme_highlighted_check = exists(default_theme_highlighted_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert default_theme_highlighted_check, "Default theme is not highlighted in door-hanger"
 
+        undo_button_exist = exists(undo_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert undo_button_exist, "Could not find Undo button"
         click(undo_button_pattern)
         dark_theme_exist = exists(AboutAddons.Themes.IRIS_TAB_DARK_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
         assert dark_theme_exist, "Could not apply dark theme successfully"
@@ -149,9 +157,9 @@ class Test(FirefoxTest):
                 """
         click(unselected_theme_locations)
         previous_tab()
-        light_theme_check = exists(confirm_tab_theme, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert light_theme_check, f"Could not apply {theme_name} successfully"
+        iris_tab_found = exists(confirm_tab_theme, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert iris_tab_found, f"Could not apply {theme_name} successfully"
         previous_tab()
         click(selected_theme_door_hanger)
-        light_theme_highlighted_check = exists(confirm_selected_theme, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert light_theme_highlighted_check, f"{theme_name} is not highlighted in door-hanger"
+        applied_theme_highlighted_door_hanger = exists(confirm_selected_theme, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert applied_theme_highlighted_door_hanger, f"{theme_name} is not highlighted in door-hanger"
