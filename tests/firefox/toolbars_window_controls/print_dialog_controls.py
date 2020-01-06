@@ -19,10 +19,13 @@ class Test(FirefoxTest):
         dialog_pattern = Pattern("print_dialog.png")
 
         navigate(PathManager.get_web_asset_dir("moz.pdf"))
-        assert exists(test_pdf_pattern, 10), "The test PDF is present."
+
+        pdf_found = exists(test_pdf_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert pdf_found, "The test PDF couldn't open"
 
         click(print_button_pattern)
-        assert exists(dialog_pattern, 10), "Print dialog is present."
+        print_dialog_found = exists(dialog_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert print_dialog_found, "Print dialog is not present in test pdf."
 
         if OSHelper.is_mac():
             click_cancel_button()
@@ -32,6 +35,6 @@ class Test(FirefoxTest):
             click_window_control("close")
 
         try:
-            assert wait_vanish(dialog_pattern, 5), "Print dialog was closed."
+            assert wait_vanish(dialog_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), "Print dialog was closed."
         except FindError:
             raise FindError("Print dialog is still present.")
