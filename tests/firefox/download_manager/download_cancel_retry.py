@@ -2,9 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from moziris.api.mouse import mouse
-from targets.nightly.firefox_ui.download_manager import DownloadManager
-from targets.nightly.firefox_ui.helpers.download_manager_utils import *
-from targets.nightly.fx_testcase import *
+from targets.firefox.firefox_ui.download_manager import DownloadManager
+from targets.firefox.firefox_ui.helpers.download_manager_utils import *
+from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
@@ -15,14 +15,16 @@ class Test(FirefoxTest):
         test_suite_id="1827",
         profile=Profiles.BRAND_NEW,
         preferences={
+            "browser.download.autohideButton": False,
             "browser.download.dir": PathManager.get_downloads_dir(),
             "browser.download.folderList": 2,
+            "browser.download.panel.shown": True,
             "browser.download.useDownloadDir": True,
             "browser.warnOnQuit": False,
         },
     )
     def run(self, firefox):
-        file_to_download = DownloadFiles.EXTRA_LARGE_FILE_512MB
+        file_to_download = DownloadFiles.VERY_LARGE_FILE_1GB
         region = Screen.UPPER_RIGHT_CORNER
 
         navigate(LocalWeb.DOWNLOAD_TEST_SITE)
