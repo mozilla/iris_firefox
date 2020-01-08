@@ -30,6 +30,9 @@ class Test(FirefoxTest):
 
         navigate('https://irisfirefoxtestfiles.netlify.com')
 
+        expected = exists(DownloadFiles.VERY_LARGE_FILE_1GB, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert expected is True, "Test page is displayed."
+
         select_throttling(NetworkOption.GOOD_3G)
 
         download_file(file_to_download, DownloadFiles.OK)
