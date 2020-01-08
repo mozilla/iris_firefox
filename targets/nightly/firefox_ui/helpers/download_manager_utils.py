@@ -250,17 +250,22 @@ def open_show_downloads_window_using_download_panel():
 
 
 def select_throttling(option):
+    network_pattern = Pattern("network.png").similar(0.6)
+    throttling_menu_pattern = Pattern("no_throttling.png").similar(0.7)
+    region_ll = Screen.LOWER_LEFT_CORNER
+    region_lr = Screen.LOWER_RIGHT_CORNER
+
     open_web_console()
 
     try:
-        wait(Pattern("network.png"), 30)
-        click(Pattern("network.png"))
+        region_ll.wait(network_pattern, 30)
+        region_ll.click(network_pattern)
     except FindError:
         raise APIHelperError("Can't find the network menu in the page, aborting test.")
 
     try:
-        wait(Pattern("no_throttling.png"), 10)
-        click(Pattern("no_throttling.png"))
+        region_lr.wait(throttling_menu_pattern, 10)
+        region_lr.click(throttling_menu_pattern)
     except FindError:
         raise APIHelperError("Can't find the throttling menu in the page, aborting test.")
 
