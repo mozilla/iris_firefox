@@ -253,7 +253,7 @@ def select_throttling(option):
     open_web_console()
 
     try:
-        wait(Pattern("network.png"), 10)
+        wait(Pattern("network.png"), 30)
         click(Pattern("network.png"))
     except FindError:
         raise APIHelperError("Can't find the network menu in the page, aborting test.")
