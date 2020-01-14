@@ -166,7 +166,7 @@ class Test(FirefoxTest):
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
-        add_to_firefox_button_found = exists(add_to_firefox_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        add_to_firefox_button_found = exists(add_to_firefox_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert add_to_firefox_button_found, "'Add to Firefox' button found."
 
         click(add_to_firefox_pattern)

@@ -197,7 +197,7 @@ class FirefoxApp:
         self.path = path
         self.channel = FirefoxUtils.get_firefox_channel(path)
         self.version = FirefoxUtils.get_firefox_version(path)
-        self.latest_version = FirefoxUtils.get_firefox_latest_version(path)
+        self.latest_version = FirefoxUtils.get_firefox_latest_version(path, locale)
         self.build_id = FirefoxUtils.get_firefox_build_id(path)
         self.locale = locale
 
@@ -451,14 +451,14 @@ def _get_scraper_details(version: str, channels: tuple, destination: str, locale
             return ("daily", {"branch": "mozilla-central", "destination": destination, "locale": locale})
 
 
-def get_version_from_path(path: str) -> str:
+def get_version_from_path(path: str, locale: str) -> str:
     """Extracts a Firefox version from a path.
 
     Example:
     for input: '/Users/username/workspace/iris/firefox-62.0.3-build1.en-US.mac.dmg' output is '62.0.3'
     """
-    new_str = path[path.find("-") + 1 : len(path)]
-    return new_str[0 : new_str.find("-")]
+    new_str = path.split("firefox-")[1].split(".%s" % locale)[0]
+    return new_str
 
 
 class FirefoxUtils:
@@ -520,7 +520,7 @@ class FirefoxUtils:
         return FirefoxUtils.get_firefox_info(build_path)["platform_buildid"]
 
     @staticmethod
-    def get_firefox_latest_version(binary: str) -> str or None:
+    def get_firefox_latest_version(binary: str, locale: str) -> str or None:
         """Returns Firefox latest available version."""
         if binary is None:
             return None
@@ -529,7 +529,7 @@ class FirefoxUtils:
         latest_type, latest_scraper_details = _get_latest_scraper_details(channel)
         latest_path = FactoryScraper(latest_type, **latest_scraper_details).filename
 
-        latest_version = get_version_from_path(latest_path)
+        latest_version = get_version_from_path(latest_path, locale)
         logger.info("Latest available version for {} channel is: {}".format(channel, latest_version))
         return latest_version
 

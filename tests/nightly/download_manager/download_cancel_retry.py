@@ -30,6 +30,11 @@ class Test(FirefoxTest):
 
         navigate('https://irisfirefoxtestfiles.netlify.com')
 
+        expected = exists(DownloadFiles.VERY_LARGE_FILE_1GB, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert expected is True, "Test page is displayed."
+
+        select_throttling(NetworkOption.GOOD_3G)
+
         download_file(file_to_download, DownloadFiles.OK)
 
         expected = region.exists(NavBar.DOWNLOADS_BUTTON, 10)
@@ -46,7 +51,7 @@ class Test(FirefoxTest):
             expected = exists(DownloadManager.DownloadState.RETRY_DOWNLOAD, 15)
             assert expected is True, "Retry download message is displayed."
 
-        Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
+        reset_mouse()
         expected = region.exists(download_cancelled_pattern, 15)
         assert expected is True, "Download was cancelled."
 
@@ -55,7 +60,7 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         region.click(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY)
-        Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
+        reset_mouse()
         expected = region.exists(DownloadManager.DownloadState.PROGRESS, 10)
         assert expected is True, "Download was restarted."
         assert expected is True, "Retry button is displayed."
@@ -67,6 +72,8 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         region.click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.ESC)
 
     def teardown(self):
         downloads_cleanup()
