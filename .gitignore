@@ -45,6 +45,7 @@ pip-selfcheck.json
 local/
 
 # Iris
+docs/
 .DS_Store
 .gitignore
 *.sh.swp
