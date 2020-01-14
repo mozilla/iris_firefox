@@ -17,7 +17,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="99471",
         test_suite_id="1827",
-        blocked_by={"id": "4386", "platform": OSPlatform.LINUX},
+        blocked_by={"id": "4386", "platform": OSPlatform.ALL},
         profile=Profiles.BRAND_NEW,
         preferences={
             "browser.download.dir": PathManager.get_downloads_dir(),

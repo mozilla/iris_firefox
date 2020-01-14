@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="101666",
         test_suite_id="1826",
+        blocked_by={"id": "4479", "platform": OSPlatform.WINDOWS},
         preferences={"extensions.formautofill.available": "on"},
     )
     def run(self, firefox):

@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="106157",
         test_suite_id="1826",
+        blocked_by={"id": "4477", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         preferences_privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
