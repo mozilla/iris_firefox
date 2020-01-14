@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="165101",
         test_suite_id="5259",
+        blocked_by={"id": "4482", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         paste_html_data_radiobutton_pattern = Pattern("paste_html_data.png")

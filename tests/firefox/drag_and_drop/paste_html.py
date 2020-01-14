@@ -8,7 +8,12 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Paste html data in demopage", locale=["en-US"], test_case_id="165100", test_suite_id="5259"
+        description="Paste html data in demopage",
+        locale=["en-US"],
+        test_case_id="165100",
+        test_suite_id="5259",
+        blocked_by={"id": "4481", "platform": OSPlatform.ALL},
+
     )
     def run(self, firefox):
         paste_html_data_radiobutton_selected_pattern = Pattern("paste_html_data_selected.png")
