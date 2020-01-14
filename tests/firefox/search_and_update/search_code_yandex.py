@@ -113,6 +113,6 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/search/?clid=2186620&text=test" in url_text, (
+        assert "/search/?clid=2186620&text=beats" in url_text, (
             "Client search code is correct for searches " "from content search field, region " + fx_region_code + "."
         )
