@@ -12,6 +12,8 @@ class Test(FirefoxTest):
         test_case_id="3951",
         test_suite_id="69",
         locale=["en-US"],
+        blocked_by={"id": "4488", "platform": OSPlatform.ALL},
+
     )
     def run(self, firefox):
         bad_ssl_logo_pattern = Pattern("bad_ssl_logo.png")

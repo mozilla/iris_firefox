@@ -14,128 +14,137 @@ class Test(FirefoxTest):
         preferences={"devtools.chrome.enabled": True},
     )
     def run(self, firefox):
-        about_preferences_home_url_pattern = Pattern("about_preferences_home_url.png")
-        home_section_top_sites_four_squares = Pattern("about_preferences_home_top_sites_four_squares.png")
-        home_section_top_sites_selected = Pattern("about_preferences_home_top_sites_selected.png")
-        home_section_top_sites_most_visit_default_value = Pattern("home_top_sites_most_visit_default_value.png")
-        home_section_top_sites_most_visit_2_row = Pattern("home_top_sites_most_visit_2_row.png")
-        home_section_top_sites_most_visit_3_row = Pattern("home_top_sites_most_visit_3_row.png")
-        top_sites_section_underneath_search_bar = Pattern("top_sites_section_underneath_search_bar.png")
-        top_sites_section_resized_browser = Pattern("top_sites_section_resized_browser.png")
-        top_sites_section_2_rows = Pattern("top_sites_section_underneath_search_bar_2_row.png")
-        top_sites_section_resized_browser_2_rows = Pattern("top_sites_section_resized_browser_2_row.png")
-        top_sites_section_3_rows = Pattern("top_sites_section_underneath_search_bar_3_row.png")
-        top_sites_section_resized_browser_3_rows = Pattern("top_sites_section_resized_browser_3_row.png")
-        top_sites_section_4_rows = Pattern("top_sites_section_underneath_search_bar_4_row.png")
-        top_sites_section_resized_browser_4_rows = Pattern("top_sites_section_resized_browser_4_row.png")
-        optional_footer_message_from_firefox = Pattern("optional_footer_message_from_firefox.png")
-        cross_mark_on_footer_message = Pattern("cross_mark_on_footer_message.png")
-        top_sites_section_as_a_reference = Pattern("top_sites_section_as_a_reference.png")
+        top_sites_drop_down_1_row_pattern = Pattern("home_top_sites_most_visit_default_value.png")
+        top_sites_drop_down_2_row_pattern = Pattern("home_top_sites_most_visit_2_row.png")
+        top_sites_drop_down_3_row_pattern = Pattern("home_top_sites_most_visit_3_row.png")
+        top_sites_option_pattern = Pattern("top_sites_option.png")
+        top_sites_reddit_pattern = Pattern("top_sites_reddit.png")
+        top_sites_amazon_pattern = Pattern("top_sites_amazon.png")
+        top_sites_twitter_pattern = Pattern("top_sites_twitter.png")
+        top_sites_facebook_pattern = Pattern("top_sites_facebook.png")
+        top_sites_wikipedia_pattern = Pattern("top_sites_wikipedia.png")
+        top_sites_youtube_pattern = Pattern("top_sites_youtube.png")
+        top_sites_empty_box_pattern = Pattern("top_sites_empty_box_pattern.png")
+        web_search_options = Pattern('web_search_options.png')
 
         navigate("about:preferences#home")
-        try:
-            wait(about_preferences_home_url_pattern)
-        except FindError:
-            raise FindError("about:preferences#home page could not loaded successfully")
+        preferences_page_opened = exists(top_sites_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert preferences_page_opened, "about:preferences#home page could not loaded successfully"
+        click(web_search_options)
 
-        about_preferences_home_url_exists = exists(about_preferences_home_url_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert about_preferences_home_url_exists, "Home section of about:preferences page could not loaded successfully"
+        top_sites_option_location = find(top_sites_option_pattern)
+        top_sites_option_width, top_sites_option_height = top_sites_option_pattern.get_size()
 
-        # Create Region for top site
-        top_site_location = find(top_sites_section_as_a_reference)
-        top_site_reference_region = Region(
-            top_site_location.x, top_site_location.y, Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 11
+        # Small top site region to verify checkbox status in about:preferences
+        top_sites_option_region = Region(
+            top_sites_option_location.x - top_sites_option_width,
+            top_sites_option_location.y,
+            top_sites_option_width * 2,
+            top_sites_option_height,
         )
 
-        try:
-            wait(home_section_top_sites_four_squares)
-        except FindError:
-            raise FindError("Content and Images of about:preferences#home page could not loaded")
-
-        top_sites_four_squares_exists = exists(
-            home_section_top_sites_four_squares, FirefoxSettings.FIREFOX_TIMEOUT, region=top_site_reference_region
+        top_sites_selected = exists(
+            AboutPreferences.CHECKED_BOX, FirefoxSettings.FIREFOX_TIMEOUT, top_sites_option_region
         )
-        assert top_sites_four_squares_exists, 'Four Squares icon is not present beside "Top Sites"'
+        assert top_sites_selected, "The option 'Top Sites' is not selected by default."
 
-        home_section_top_sites_selected_exists = exists(
-            home_section_top_sites_selected, FirefoxSettings.FIREFOX_TIMEOUT, region=top_site_reference_region
+        # Full top site region in about:preferences to verify top site row selector drop-down
+        full_top_site_region = Region(
+            0,
+            top_sites_option_location.y - top_sites_option_height / 2,
+            Screen.SCREEN_WIDTH,
+            top_sites_option_height * 3
         )
-        assert home_section_top_sites_selected_exists, 'Checkbox option present in "Top Sites" is not selected'
+        top_sites_drop_down_1_row_pattern_found = exists(top_sites_drop_down_1_row_pattern,
+                                                         FirefoxSettings.FIREFOX_TIMEOUT,
+                                                         region=full_top_site_region,
+                                                         )
+        assert top_sites_drop_down_1_row_pattern_found, 'Default number of rows for "Top Sites" is not selected as 1'
 
-        top_sites_most_visit_default_value_exists = exists(
-            home_section_top_sites_most_visit_default_value,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_site_reference_region,
-        )
-        assert top_sites_most_visit_default_value_exists, 'Default number of rows for "Top Sites" is not selected as 1'
+        default_top_sites_list = [
+            top_sites_reddit_pattern,
+            top_sites_amazon_pattern,
+            top_sites_twitter_pattern,
+            top_sites_facebook_pattern,
+            top_sites_wikipedia_pattern,
+            top_sites_youtube_pattern,
+        ]
 
         new_tab()
-        top_sites_section_underneath_search_bar_exists = exists(
-            top_sites_section_underneath_search_bar, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert top_sites_section_underneath_search_bar_exists, "In new tab, 8 cells are not displayed in a single row"
+        home_and_new_tab_list = ["about:home", "about:newtab"]
+        for navigation_page in home_and_new_tab_list:
+            navigate(navigation_page)
+            top_sites_displayed = exists(Utils.TOP_SITES, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert top_sites_displayed, "The Top Sites section is not displayed in {} page".format(navigation_page)
 
+        new_private_window()
+        top_sites_displayed = exists(Utils.TOP_SITES, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        assert top_sites_displayed is False, "The Top Sites section is displaying in the private window"
+        close_tab()
+
+        # Validate 8 sites in 1 row
+        eight_sites_in_one_row = default_top_sites_list.copy()
+        for _ in range(2):
+            eight_sites_in_one_row.append(top_sites_empty_box_pattern)
+        self.sites_displayed_in_top_sites_section(1, 8, eight_sites_in_one_row)
+
+        # Validate 6 sites in 1 row : after resizing
         self.resize_browser("1000", "700")
-        top_sites_section_resized_browser_exists = exists(
-            top_sites_section_resized_browser, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert top_sites_section_resized_browser_exists, "After resizing, 6 cells are not displayed in a single row"
+        self.sites_displayed_in_top_sites_section(1, 6, default_top_sites_list)
 
-        self.top_site_dropdown(home_section_top_sites_most_visit_default_value, top_site_reference_region)
-
+        self.top_site_drop_down(top_sites_drop_down_1_row_pattern, full_top_site_region)
         previous_tab()
-        top_sites_section_2_rows_exists = exists(top_sites_section_2_rows, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert top_sites_section_2_rows_exists, "In new tab, 16 cells are not displayed in a two rows"
 
+        # Validate 16 sites in 2 rows
+        sixteen_sites_in_two_rows = default_top_sites_list.copy()
+        for _ in range(10):
+            sixteen_sites_in_two_rows.append(top_sites_empty_box_pattern)
+        self.sites_displayed_in_top_sites_section(2, 16, sixteen_sites_in_two_rows)
+
+        # Validate 12 sites in 2 rows : after resizing
         self.resize_browser("1000", "700")
-        top_sites_section_resized_browser_2_rows_exists = exists(
-            top_sites_section_resized_browser_2_rows, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert top_sites_section_resized_browser_2_rows_exists, "After resizing, 12 cells are not displayed in two rows"
+        twelve_sites_in_two_rows = default_top_sites_list.copy()
+        for _ in range(6):
+            twelve_sites_in_two_rows.append(top_sites_empty_box_pattern)
+        self.sites_displayed_in_top_sites_section(2, 12, twelve_sites_in_two_rows)
 
-        self.top_site_dropdown(home_section_top_sites_most_visit_2_row, top_site_reference_region)
-
+        self.top_site_drop_down(top_sites_drop_down_2_row_pattern, full_top_site_region)
         previous_tab()
-        top_sites_section_3_rows_exists = exists(top_sites_section_3_rows, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert top_sites_section_3_rows_exists, "In new tab, 24 cells are not displayed in a three rows"
 
+        # Validate 24 sites in 3 rows
+        twenty_four_sites_in_three_rows = default_top_sites_list.copy()
+        for _ in range(18):
+            twenty_four_sites_in_three_rows.append(top_sites_empty_box_pattern)
+        self.sites_displayed_in_top_sites_section(3, 24, twenty_four_sites_in_three_rows)
+
+        # Validate 18 sites in 3 rows : after resizing
         self.resize_browser("1000", "700")
-        top_sites_section_resized_browser_3_rows_exists = exists(
-            top_sites_section_resized_browser_3_rows, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            top_sites_section_resized_browser_3_rows_exists
-        ), "After resizing, 18 cells are not displayed in three " "rows"
-        self.top_site_dropdown(home_section_top_sites_most_visit_3_row, top_site_reference_region)
+        eighteen_sites_in_three_rows = default_top_sites_list.copy()
+        for _ in range(12):
+            eighteen_sites_in_three_rows.append(top_sites_empty_box_pattern)
+        self.sites_displayed_in_top_sites_section(3, 18, eighteen_sites_in_three_rows)
 
+        self.top_site_drop_down(top_sites_drop_down_3_row_pattern, full_top_site_region)
         previous_tab()
-        hover(optional_footer_message_from_firefox)
-        # Create Region for firefox footer message
-        footer_message_location = find(optional_footer_message_from_firefox)
-        footer_message_region = Region(
-            footer_message_location.x, footer_message_location.y, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 6
-        )
-        try:
-            wait(cross_mark_on_footer_message, region=footer_message_region)
-        except FindError:
-            raise FindError("Cross mark does not appear post hovering on firefox footer message")
-        click(cross_mark_on_footer_message, region=footer_message_region)
         type(Key.DOWN)
-        top_sites_section_4_rows_exists = exists(top_sites_section_4_rows, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert top_sites_section_4_rows_exists, "In new tab, 32 cells are not displayed in a four rows"
 
+        # Validate 32 sites in 4 rows
+        thirty_two_sites_in_four_rows = default_top_sites_list.copy()
+        for _ in range(26):
+            thirty_two_sites_in_four_rows.append(top_sites_empty_box_pattern)
+        self.sites_displayed_in_top_sites_section(4, 32, thirty_two_sites_in_four_rows)
+
+        # Validate 24 sites in 4 rows : after resizing
         self.resize_browser("1000", "700")
-        type(Key.DOWN)
-        top_sites_section_resized_browser_4_rows_exists = exists(
-            top_sites_section_resized_browser_4_rows, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            top_sites_section_resized_browser_4_rows_exists
-        ), "After resizing, 24 cells are not displayed in four " "rows"
+        twenty_four_sites_in_four_rows = default_top_sites_list.copy()
+        for _ in range(18):
+            twenty_four_sites_in_four_rows.append(top_sites_empty_box_pattern)
+        self.sites_displayed_in_top_sites_section(4, 24, twenty_four_sites_in_four_rows)
 
-    def top_site_dropdown(self, dropdown_image: Pattern, test_region: Pattern):
-        """Locate 'Top Sites' drop-down and change dropdown .
-        :param dropdown_image: image Pattern.
+    @staticmethod
+    def top_site_drop_down(drop_down_image: Pattern, test_region: Pattern):
+        """Locate 'Top Sites' drop-down and change drop-down .
+        :param drop_down_image: image Pattern.
         :param test_region: image Pattern, locator for sub-region of top site drop-down .
         :return: None.
         """
@@ -144,12 +153,13 @@ class Test(FirefoxTest):
         else:
             maximize_window()
         previous_tab()
-        click(dropdown_image, None, region=test_region)
+        click(drop_down_image, None, region=test_region)
         type(Key.DOWN)
         time.sleep(Settings.DEFAULT_KEY_SHORTCUT_DELAY)
         type(Key.ENTER)
 
-    def resize_browser(self, width, height):
+    @staticmethod
+    def resize_browser(width, height):
         """resize browser to a specific width and height
         :param width: String (a number passed as string), Sets the width of the window, in pixels.
         :param height: String (a number passed as string), Sets the height of the window, in pixels.
@@ -171,3 +181,52 @@ class Test(FirefoxTest):
             type(text=Key.F4, modifier=KeyModifier.ALT)
         click(Pattern('new_tab_icon.png'))
         time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
+
+    @staticmethod
+    def sites_displayed_in_top_sites_section(no_of_rows, no_of_top_sites_boxes, top_site_list):
+        """Create region to validate if cells are in specific row/column or not
+        :param no_of_rows: Integer Number, Number of rows in top sites section
+        :param no_of_top_sites_boxes: Integer Number, Top sites displayed in top sites section
+        :param top_site_list: list,  List of all the sites displayed in top sites section.
+        :return: None.
+        """
+        top_sites_first_box_pattern = Pattern("top_sites_first_box_pattern.png")
+
+        top_sites_first_box_found = exists(top_sites_first_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert top_sites_first_box_found, "Top sites first box is not visible in current page"
+        top_sites_first_box_location = find(top_sites_first_box_pattern)
+        top_sites_cell_width, top_sites_cell_height = top_sites_first_box_pattern.get_size()
+        top_sites_region = Region(
+            top_sites_first_box_location.x,
+            top_sites_first_box_location.y,
+            top_sites_cell_width * no_of_top_sites_boxes / no_of_rows,
+            top_sites_cell_height * no_of_rows,
+        )
+        for site in top_site_list:
+            if top_site_list.index(site) < 6:
+                top_site_full_path = format(site)
+                site_name_with_bracket = re.split(".png", top_site_full_path)
+                top_site_name = (str(site_name_with_bracket[0]).replace("(", " "))
+                top_site_found = exists(site, FirefoxSettings.SHORT_FIREFOX_TIMEOUT, region=top_sites_region)
+                assert top_site_found, \
+                    "{} couldn't find listed by default in top site section.".format(top_site_name)
+            else:
+                top_site_found = exists(site, FirefoxSettings.SHORT_FIREFOX_TIMEOUT, region=top_sites_region)
+
+                if no_of_top_sites_boxes in [8, 16, 24, 32]:
+                    error_msg = "{} top sites are not present in {} row(s) in normal mode". \
+                        format(no_of_top_sites_boxes, no_of_rows)
+                elif no_of_top_sites_boxes in [6, 12, 18]:
+                    error_msg = "{} top sites are not present in {} row(s) in resized mode". \
+                        format(no_of_top_sites_boxes, no_of_rows)
+                elif no_of_top_sites_boxes == 24:
+                    if no_of_rows == 3:
+                        error_msg = "{} top sites are not present in {} row(s) in normal mode". \
+                            format(no_of_top_sites_boxes, no_of_rows)
+                    elif no_of_rows == 4:
+                        error_msg = "{} top sites are not present in {} row(s) in resized mode". \
+                            format(no_of_top_sites_boxes, no_of_rows)
+                else:
+                    error_msg = "Wrong no_of_rows passed as an argument"
+
+            assert top_site_found, error_msg

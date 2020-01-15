@@ -60,7 +60,7 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/search/?text=test&clid=2186621" in url_text, (
+        assert "/search/?clid=2186621&text=test" in url_text, (
             "Client search code is correct for searches from" "awesomebar, region " + fx_region_code + "."
         )
 
@@ -75,7 +75,7 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/search/?text=test&clid=2186618" in url_text, (
+        assert "/search/?clid=2186618&text=test" in url_text, (
             "Client search code is correct for searches from " "search bar, region " + fx_region_code + "."
         )
 
@@ -95,7 +95,7 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/search/?text=Focus&clid=2186623" in url_text, (
+        assert "/search/?clid=2186623&text=test" in url_text, (
             "Client search code is correct for searches " "with context menu, region " + fx_region_code + "."
         )
 
@@ -113,6 +113,6 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/search/?text=beats&clid=2186620" in url_text, (
+        assert "/search/?clid=2186620&text=beats" in url_text, (
             "Client search code is correct for searches " "from content search field, region " + fx_region_code + "."
         )
