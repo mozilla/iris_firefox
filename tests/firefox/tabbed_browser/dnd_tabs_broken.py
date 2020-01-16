@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_suite_id="2103",
     )
     def run(self, firefox):
-        new_tab_image_pattern = Pattern("new_tab_icon.png")
+        new_tab_image_pattern = Pattern("new_tab_text_icon.png")
         mozilla_tab_pattern = Pattern("mozilla_tab.png")
         unopened_mozilla_tab_pattern = Pattern("unopened_mozilla_tab.png")
         home_preference_pattern = Pattern("home_preference.png")
