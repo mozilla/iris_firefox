@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="127242",
         test_suite_id="2085",
-        blocked_by={"id": "4485", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         work_in_label_pattern = Pattern("work_in_selected_label.png")
@@ -22,7 +21,7 @@ class Test(FirefoxTest):
         test_page_local = self.get_asset_path("dark_backgound.html")
         navigate(test_page_local)
 
-        page_loaded = exists(instagram_unselected_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        page_loaded = exists(instagram_unselected_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert page_loaded, "The page is successfully loaded."
 
         # Open the Find Toolbar
