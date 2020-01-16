@@ -8,7 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Browser controls work as expected.", locale=["en-US"], test_case_id="119481", test_suite_id="1998"
+        description="Browser controls work as expected.",
+        locale=["en-US"],
+        test_case_id="119481",
+        test_suite_id="1998",
+        blocked_by={"id": "4511", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         window_controls_minimize_pattern = Pattern("window_controls_minimize.png")

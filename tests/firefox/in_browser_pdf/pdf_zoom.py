@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=[Locales.ENGLISH],
         test_case_id="3928",
         test_suite_id="65",
+        blocked_by={"id": "4530", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         pdf_file_page_contents_zoomed_in_pattern = Pattern("pdf_file_page_contents_zoomed_in.png").similar(0.7)

@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_suite_id="69",
         locale=["en-US"],
         profile=Profiles.BRAND_NEW,
+        blocked_by={"id": "4473", "platform": OSPlatform.MAC},
         preferences={"browser.warnOnQuit": False, "browser.shell.checkDefaultBrowser": False, },
     )
     def run(self, firefox):

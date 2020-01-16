@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="118184",
         test_suite_id="1998",
         exclude=OSPlatform.LINUX,
+        blocked_by={"id": "4512", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         customize_page_drag_space_disabled_pattern = Pattern("customize_page_drag_space_disabled.png")
