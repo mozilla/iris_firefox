@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="249028",
         test_suite_id="2241",
         locale=["en-US"],
+        blocked_by={"id": "4505", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         use_custom_settings_for_history_pattern = Pattern("custom_history_settings.png")

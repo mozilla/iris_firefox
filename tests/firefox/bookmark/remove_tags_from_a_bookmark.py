@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="4150",
         test_suite_id="2525",
         profile=Profiles.TEN_BOOKMARKS,
+        blocked_by={"id": "4509", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         moz_bookmark_pattern = Pattern("moz_sidebar_bookmark.png").similar(0.95)

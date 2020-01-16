@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="161669",
         test_suite_id="2241",
+        blocked_by={"id": "4503", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         highlights_options_pattern = Pattern("highlights_option.png")
