@@ -65,8 +65,8 @@ class Test(FirefoxTest):
         controls_location = find(new_tab_image_pattern)
         x_coord = controls_location.x
         y_coord = controls_location.y
-        drag_start = Location(x_coord + 400, y_coord + 5)
-        drag_end = Location(x_coord + 700, y_coord + 200)
+        drag_start = Location(Screen.SCREEN_WIDTH / 2, y_coord + 5)
+        drag_end = Location(Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
         drag_drop(drag_start, drag_end, duration=drag_and_drop_duration)
 
         tab_location = find(new_tab_image_pattern)
@@ -81,7 +81,7 @@ class Test(FirefoxTest):
                                               )
 
         new_tab_image = exists(new_tab_image_pattern, FirefoxSettings.FIREFOX_TIMEOUT, second_reorder_window_region)
-        assert new_tab_image, "Could not open new tab"
+        assert new_tab_image, "Could find drag and dropped 'new tab' in the dropped location of the first window "
         mozilla_tab_location = find(unopened_mozilla_tab_pattern)
         new_tab_location = find(new_tab_image_pattern)
 
