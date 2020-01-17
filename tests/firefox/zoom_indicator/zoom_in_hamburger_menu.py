@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="7458",
         test_suite_id="242",
+        blocked_by={"id": "4551", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         url1 = "about:home"

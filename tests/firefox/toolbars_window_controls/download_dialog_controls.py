@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="118801",
         test_suite_id="1998",
+        blocked_by={"id": "4319", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         test_pdf_pattern = Pattern("moz_fast.png")

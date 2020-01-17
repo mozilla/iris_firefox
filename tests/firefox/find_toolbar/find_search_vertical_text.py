@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="127278",
         test_suite_id="2085",
+        blocked_by={"id": "4570", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         word_mozilla_first_selected_pattern = Pattern("word_mozilla_first_selected.png")

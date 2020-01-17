@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="143611",
         test_suite_id="2241",
         locale=["en-US"],
+        blocked_by={"id": "4552", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         clear_everything_history_pattern = Pattern("clear_everything_history.png")

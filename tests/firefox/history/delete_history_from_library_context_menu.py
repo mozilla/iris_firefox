@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="178346",
         test_suite_id="2000",
+        blocked_by={"id": "4578", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         mozilla_bookmark_focus_pattern = Pattern("mozilla_bookmark_focus.png")

@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="107721",
         test_suite_id="1826",
         locales=["en-US"],
+        blocked_by={"id": "4571", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         private_window_inactive_pattern = Pattern("private_window_inactive.png")

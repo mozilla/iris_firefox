@@ -15,6 +15,7 @@ class Test(FirefoxTest):
         profile=Profiles.BRAND_NEW,
         blocked_by={"id": "4473", "platform": OSPlatform.MAC},
         preferences={"browser.warnOnQuit": False, "browser.shell.checkDefaultBrowser": False, },
+        blocked_by={"id": "4538", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         start_in_safe_mode_button_pattern = Pattern("start_in_safe_mode_button.png")

@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_suite_id="2241",
         locale=["en-US"],
         preferences={"devtools.chrome.enabled": True},
+        blocked_by={"id": "4467", "platform": [OSPlatform.LINUX, OSPlatform.MAC]},
     )
     def run(self, firefox):
         top_sites_drop_down_1_row_pattern = Pattern("home_top_sites_most_visit_default_value.png")
