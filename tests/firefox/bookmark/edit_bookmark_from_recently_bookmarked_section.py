@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id="165492",
         test_suite_id="2525",
         profile=Profiles.TEN_BOOKMARKS,
-        blocked_by={"id": "1527258", "platform": OSPlatform.WINDOWS},
+        blocked_by={"id": "4478", "platform": [OSPlatform.MAC, OSPlatform.LINUX]},
     )
     def run(self, firefox):
         properties_option_pattern = Pattern("properties_option.png")

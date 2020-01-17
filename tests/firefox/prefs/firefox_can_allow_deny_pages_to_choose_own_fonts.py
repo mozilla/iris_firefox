@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="143559",
         test_suite_id="2241",
         locale=["en-US"],
+        blocked_by={"id": "4526", "platform": OSPlatform.LINUX},
     )
     def run(self, firefox):
         preferences_general_option_pattern = Pattern("preferences_general_option.png")

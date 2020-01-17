@@ -33,7 +33,11 @@ class Test(FirefoxTest):
         copy_file(original_txtfile_path, backup_txtfile_path)
 
     @pytest.mark.details(
-        description="Drop .txt File in demopage", locale=["en-US"], test_case_id="165086", test_suite_id="5259"
+        description="Drop .txt File in demopage",
+        locale=["en-US"],
+        test_case_id="165086",
+        test_suite_id="5259",
+        blocked_by={"id": "4558", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON

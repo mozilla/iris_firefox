@@ -7,7 +7,13 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    @pytest.mark.details(description="Open find toolbar", locale=["en-US"], test_case_id="127238", test_suite_id="2085")
+    @pytest.mark.details(
+        description="Open find toolbar",
+        locale=["en-US"],
+        test_case_id="127238",
+        test_suite_id="2085",
+        blocked_by={"id": "4528", "platform": OSPlatform.WINDOWS},
+    )
     def run(self, firefox):
         open_find()
         edit_select_all()

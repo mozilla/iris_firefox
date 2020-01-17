@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="120467",
         test_suite_id="1998",
+        blocked_by={"id": "4555", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         library_title_pattern = Library.TITLE

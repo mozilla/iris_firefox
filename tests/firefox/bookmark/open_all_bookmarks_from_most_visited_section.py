@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="163381",
         test_suite_id="2525",
         profile=Profiles.TEN_BOOKMARKS,
+        blocked_by={"id": "4525", "platform": OSPlatform.LINUX},
     )
     def run(self, firefox):
         firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")

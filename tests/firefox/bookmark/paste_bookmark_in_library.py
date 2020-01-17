@@ -8,7 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Paste a bookmark in Library", locale=["en-US"], test_case_id="169266", test_suite_id="2525"
+        description="Paste a bookmark in Library",
+        locale=["en-US"],
+        test_case_id="169266",
+        test_suite_id="2525",
+        blocked_by={"id": "4550", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         soap_wiki_tab_pattern = Pattern("soap_wiki_tab.png")

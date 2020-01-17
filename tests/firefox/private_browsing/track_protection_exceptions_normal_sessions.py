@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="107717",
         test_suite_id="1826",
         locales=["en-US"],
+        blocked_by={"id": "4497", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         remove_website_button_pattern = AboutPreferences.Privacy.Exceptions.REMOVE_WEBSITE_BUTTON

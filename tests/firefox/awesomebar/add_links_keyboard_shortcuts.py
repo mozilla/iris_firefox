@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="119484",
         test_suite_id="1902",
-        blocked_by={"id": "4480", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]}
     )
     def run(self, firefox):
         cnn_tab_pattern = Pattern("cnn_tab.png")
@@ -41,7 +40,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         key_up(Key.CTRL)
 
-        expected = region.exists(facebook_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        expected = region.exists(facebook_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Facebook page successfully loaded."
 
         previous_tab()

@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=[Locales.ENGLISH],
         test_case_id="3933",
         test_suite_id="65",
+        blocked_by={"id": "4529", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         zoom_in_button_pattern = Pattern("zoom_in_button.png").similar(0.7)

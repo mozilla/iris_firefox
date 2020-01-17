@@ -13,11 +13,13 @@ class Test(FirefoxTest):
         test_case_id="143606",
         test_suite_id="2241",
         locale=["en-US"],
+        blocked_by={"id": "4531", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
         preferences={
             "browser.download.dir": PathManager.get_downloads_dir(),
             "browser.download.folderList": 2,
             "browser.download.useDownloadDir": True,
         },
+        blocked_by={"id": "4531", "platform": OSPlatform.MAC},
     )
     def run(self, firefox):
         always_private_pattern = Pattern("always_private.png")
