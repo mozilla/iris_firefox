@@ -14,6 +14,7 @@ class Test(FirefoxTest):
         test_case_id="99470",
         test_suite_id="1827",
         profile=Profiles.BRAND_NEW,
+        blocked_by={"id": "4516", "platform": OSPlatform.LINUX},
         preferences={
             "browser.download.autohideButton": False,
             "browser.download.dir": PathManager.get_downloads_dir(),

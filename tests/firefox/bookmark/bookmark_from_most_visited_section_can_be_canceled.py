@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id="163397",
         test_suite_id="2525",
         profile=Profiles.TEN_BOOKMARKS,
-        exclude=OSPlatform.MAC,
+        blocked_by={"id": "4565", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")

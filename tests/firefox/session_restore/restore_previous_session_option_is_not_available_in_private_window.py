@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="115426",
         test_suite_id="68",
         locales=Locales.ENGLISH,
+        blocked_by={"id": "4540", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         restore_previous_session_pattern = Pattern("restore_previous_session_item.png")
