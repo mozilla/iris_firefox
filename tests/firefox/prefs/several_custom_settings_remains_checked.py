@@ -13,7 +13,6 @@ class Test(FirefoxTest):
         test_case_id="249028",
         test_suite_id="2241",
         locale=["en-US"],
-        blocked_by={"id": "4505", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         use_custom_settings_for_history_pattern = Pattern("custom_history_settings.png")
@@ -73,7 +72,6 @@ class Test(FirefoxTest):
         restart_browser = exists(restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert restart_browser, "Restart browser button available"
 
-        click(restart_browser_pattern)
         click(restart_browser_pattern.target_offset(20, 2))
 
         firefox_restarted = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
