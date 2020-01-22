@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="4277",
         test_suite_id="83",
-        blocked_by={"id": "4489", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         change_search_settings_pattern = Pattern("change_search_settings.png").similar(0.6)
