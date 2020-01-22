@@ -13,7 +13,6 @@ class Test(FirefoxTest):
         test_case_id="107718",
         test_suite_id="1826",
         locale=["en-US"],
-        blocked_by={"id": "4496", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         blocking_turn_off_pattern = Pattern("turn_off_blocking_for_site_button.png")
