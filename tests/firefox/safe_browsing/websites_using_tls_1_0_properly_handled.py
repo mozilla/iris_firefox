@@ -11,17 +11,21 @@ class Test(FirefoxTest):
         description="Websites using the TLS v1.0 protocol are properly handled",
         test_case_id="3950",
         test_suite_id="69",
-        locale=["en-US"],
-        blocked_by={"id": "4487", "platform": OSPlatform.ALL},
-
+        locale=["en-US"]
     )
     def run(self, firefox):
         bad_ssl_logo_pattern = Pattern("bad_ssl_logo.png")
         show_connection_details_button_pattern = Pattern("show_connection_details_button.png")
         more_information_button_pattern = Pattern("more_information_button.png")
         tls_broken_encryption_message_pattern = Pattern("tls_broken_encryption_message.png")
+        enable_tls_button = Pattern("enable_tls_button.png")
 
         navigate("https://tls-v1-0.badssl.com:1010/")
+
+        enable_tls_button_expected = exists(enable_tls_button, FirefoxSettings.FIREFOX_TIMEOUT)
+
+        if enable_tls_button_expected:
+            click(enable_tls_button)
 
         bad_ssl_page_loaded = exists(bad_ssl_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert bad_ssl_page_loaded, "Bad SSL page sucessfully loaded"
@@ -35,9 +39,9 @@ class Test(FirefoxTest):
 
         text_displayed = get_clipboard().replace("\n", "").replace("\r", "")
         assert text_displayed in "tls-v1-0.badssl.com", (
-            "The URL is properly loaded and red background page is "
-            + "displayed, containing a string saying: "
-            + "tls-v1-0.badssl.com"
+                "The URL is properly loaded and red background page is "
+                + "displayed, containing a string saying: "
+                + "tls-v1-0.badssl.com"
         )
 
         click(LocationBar.INSECURE_CONNECTION_LOCK)
@@ -58,7 +62,7 @@ class Test(FirefoxTest):
             tls_broken_encryption_message_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert tls_broken_encryption_message_displayed, (
-            "The Technical Details section states that the connection "
-            + 'has broken encryption via TLS 1.0: "Broken Encryption '
-            + '(TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, 256 bit keys, TLS 1.0)"'
+                "The Technical Details section states that the connection "
+                + 'has broken encryption via TLS 1.0: "Broken Encryption '
+                + '(TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, 256 bit keys, TLS 1.0)"'
         )

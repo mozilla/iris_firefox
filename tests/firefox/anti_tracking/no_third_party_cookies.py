@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="106156",
         test_suite_id="1826",
-        blocked_by={"id": "4478", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         all_third_party_cookies_pattern = Pattern("all_third_party_cookies.png").similar(0.6)

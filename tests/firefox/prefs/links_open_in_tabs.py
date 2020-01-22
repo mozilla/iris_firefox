@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="143550",
         test_suite_id="2241",
         locale=["en-US"],
+        blocked_by={"id": "4537", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         navigate_load_listener_page_title_pattern = Pattern("navigate_page_title.png").similar(0.6)

@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="171599",
         test_suite_id="2525",
+        blocked_by={"id": "4577", "platform": OSPlatform.MAC},
     )
     def run(self, firefox):
         soap_bookmark_pattern = Pattern("soap_bookmark.png").similar(0.6)
