@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         test_suite_id="2241",
         locale=["en-US"],
         blocked_by={"id": "4486", "platform": OSPlatform.ALL},
-
     )
     def run(self, firefox):
         about_preferences_home_url_pattern = Pattern("about_preferences_home_url.png")
