@@ -45,6 +45,7 @@ class Test(FirefoxTest):
 
         if OSHelper.is_mac():
             type(Key.TAB)
+            type(Key.DOWN)
         else:
             [type(Key.TAB) for _ in range(2)]
 
@@ -79,6 +80,7 @@ class Test(FirefoxTest):
 
         if OSHelper.is_mac():
             type(Key.TAB)
+            type(Key.DOWN)
         else:
             [type(Key.TAB) for _ in range(2)]
 
