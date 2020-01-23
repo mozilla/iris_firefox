@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="169274",
         test_suite_id="2525",
-        blocked_by={"id": "4549", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         soap_wiki_tab_pattern = Pattern("soap_wiki_tab.png")

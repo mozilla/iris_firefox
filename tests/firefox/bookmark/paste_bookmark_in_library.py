@@ -12,13 +12,12 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="169266",
         test_suite_id="2525",
-        blocked_by={"id": "4550", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         soap_wiki_tab_pattern = Pattern("soap_wiki_tab.png")
         copy_option_pattern = Pattern("copy_option.png")
         paste_option_pattern = Pattern("paste_option.png")
-        other_bookmarks_option_pattern = Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6)
+        other_bookmarks_option_pattern = Pattern("other_bookmarks_option_pattern.png")
         bookmarks_toolbar_option = Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
