@@ -9,16 +9,16 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description="Search on a page with vertical text [Blocked by a bug of not focusing find item if text is "
-        "larger than a screen]",
+                    "larger than a screen]",
         locale=["en-US"],
         test_case_id="127278",
         test_suite_id="2085",
-        blocked_by={"id": "4570", "platform": OSPlatform.WINDOWS},
+
     )
     def run(self, firefox):
         word_mozilla_first_selected_pattern = Pattern("word_mozilla_first_selected.png")
         word_mozilla_second_selected_pattern = Pattern("word_mozilla_second_selected.png")
-        word_mozilla_second_unselected_pattern = Pattern("word_mozilla_second_unselected.png").similar(0.7)
+        word_mozilla_second_unselected_pattern = Pattern("word_mozilla_second_unselected.png")
 
         vertical_search_page_local = self.get_asset_path("findbug.html")
         navigate(vertical_search_page_local)
@@ -26,8 +26,8 @@ class Test(FirefoxTest):
         home_button_displayed = exists(NavBar.HOME_BUTTON)
         assert home_button_displayed, "Home button displayed"
 
-        home_buton_location = find(NavBar.HOME_BUTTON)
-        text_region = Region(0, 0, home_buton_location.x, Screen.SCREEN_HEIGHT)
+        home_button_location = find(NavBar.HOME_BUTTON)
+        text_region = Region(0, 0, home_button_location.x, Screen.SCREEN_HEIGHT)
 
         navigated_to_find_bug = exists(
             word_mozilla_second_unselected_pattern, FirefoxSettings.FIREFOX_TIMEOUT, text_region
@@ -50,11 +50,16 @@ class Test(FirefoxTest):
             word_mozilla_second_unselected_pattern, FirefoxSettings.FIREFOX_TIMEOUT, text_region
         )
         assert selected_label_exists and unselected_label_exists, (
-            "The first one has a green background highlighted" " and the others are not highlighted."
+            "The first one has a green background highlighted" " and the others are not highlighted.",
+            FirefoxSettings.FIREFOX_TIMEOUT
         )
 
         before_next_selected_label_y = find(word_mozilla_first_selected_pattern, text_region).y
         find_next()
+        word_mozilla_second_selected_pattern_found = exists(word_mozilla_second_selected_pattern,
+                                                            FirefoxSettings.FIREFOX_TIMEOUT, text_region)
+
+        assert word_mozilla_second_selected_pattern_found, "Word Mozilla for second selection not found!"
 
         after_next_selected_label_y = find(word_mozilla_second_selected_pattern, text_region).y
         assert before_next_selected_label_y != after_next_selected_label_y, "Selected label moved forward."
