@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="143604",
         test_suite_id="2241",
-        blocked_by={"id": "4536", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         remember_history_selected_pattern = Pattern("remember_history_selected.png")
@@ -39,7 +38,6 @@ class Test(FirefoxTest):
         restart_browser_opened = exists(restart_browser_pattern)
         assert restart_browser_opened, "restart_browser_pattern"
 
-        click(restart_browser_pattern)
         click(restart_browser_pattern.target_offset(10, 2))
 
         browser_relaunched = exists(NavBar.LIBRARY_MENU, Settings.site_load_timeout) and exists(
