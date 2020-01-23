@@ -16,8 +16,9 @@ class Test(FirefoxTest):
     def run(self, firefox):
         soap_bookmark_pattern = Pattern("soap_bookmark.png").similar(0.6)
         new_bookmark_window_pattern = Pattern("new_bookmark_window.png")
-        keyword_suggestion_pattern = Pattern("keyword_suggestion.png").similar(0.7)
         add_button_pattern = Pattern("add_button.png")
+        name_field_pattern = Pattern("name_bookmark_field.png")
+
 
         open_library()
 
@@ -37,8 +38,13 @@ class Test(FirefoxTest):
 
         click(Library.Organize.NEW_BOOKMARK)
 
-        new_bookmark_window_opened = exists(new_bookmark_window_pattern)
+        new_bookmark_window_opened = exists(new_bookmark_window_pattern,FirefoxSettings.FIREFOX_TIMEOUT)
         assert new_bookmark_window_opened is True, "New Bookmark window is displayed"
+
+        name_field_pattern_found = exists(name_field_pattern,FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        assert name_field_pattern_found, "Bookmark Name field not found in New Bookmark pop-up window!"
+
+        click(name_field_pattern)
 
         paste("SOAP")
         type(Key.TAB)
@@ -49,7 +55,10 @@ class Test(FirefoxTest):
         paste("SOAP")
 
         type(Key.TAB)
-        type(Key.TAB)
+        if OSHelper.is_mac():
+            type(Key.DOWN)
+        else:
+            type(Key.TAB)
 
         paste("y")
 
