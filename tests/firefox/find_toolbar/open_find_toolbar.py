@@ -12,7 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="127238",
         test_suite_id="2085",
-        blocked_by={"id": "4528", "platform": OSPlatform.WINDOWS},
+
     )
     def run(self, firefox):
         open_find()
@@ -20,22 +20,31 @@ class Test(FirefoxTest):
         edit_delete()
 
         find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert find_toolbar_is_opened, "The Find Toolbar is successfully displayed "
+        assert find_toolbar_is_opened, "The Find Toolbar could not be found!"
 
         try:
             find_toolbar_x = find(FindToolbar.FINDBAR_TEXTBOX.similar(0.6)).x
         except FindError:
             raise FindError("Could not get the x-coordinate of the Find Toolbar")
 
+        highlight_all_button_pattern = exists(FindToolbar.HIGHLIGHT, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert highlight_all_button_pattern, "Highlight All button cannot be identified"
+
         try:
             button_highlight_all_x = find(FindToolbar.HIGHLIGHT).x
         except FindError:
             raise FindError("Could not get the x-coordinate of the Highlight All button")
 
+        match_case_button_pattern = exists(FindToolbar.FIND_CASE_SENSITIVE, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert match_case_button_pattern, "Match Case button cannot be identified"
+
         try:
             button_match_case_x = find(FindToolbar.FIND_CASE_SENSITIVE).x
         except FindError:
             raise FindError("Could not get the x-coordinate of the Match Case button")
+
+        find_entire_word_button_pattern = exists(FindToolbar.FIND_ENTIRE_WORD, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert find_entire_word_button_pattern, "Find Entire Word button cannot be identified"
 
         try:
             button_whole_words_x = find(FindToolbar.FIND_ENTIRE_WORD).x
@@ -81,22 +90,31 @@ class Test(FirefoxTest):
         edit_delete()
 
         find_toolbar_menu_bar = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert find_toolbar_menu_bar, "The Find Toolbar is successfully displayed "
+        assert find_toolbar_menu_bar, "The Find Toolbar using Menu could not be found!"
 
         try:
             find_toolbar_x = find(FindToolbar.FINDBAR_TEXTBOX).x
         except FindError:
             raise FindError("Could not get the x-coordinate of the Find Toolbar")
 
+        highlight_all_button_from_menu_pattern = exists(FindToolbar.HIGHLIGHT, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert highlight_all_button_from_menu_pattern, "Highlight All button using Menu cannot be identified"
+
         try:
             button_highlight_all_x = find(FindToolbar.HIGHLIGHT).x
         except FindError:
             raise FindError("Could not get the x-coordinate of the Highlight All button")
 
+        match_case_button_from_menu_pattern = exists(FindToolbar.FIND_CASE_SENSITIVE, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert match_case_button_from_menu_pattern, "Match Case button using Menu cannot be identified"
+
         try:
             button_match_case_x = find(FindToolbar.FIND_CASE_SENSITIVE).x
         except FindError:
             raise FindError("Could not get the x-coordinate of the Match Case button")
+
+        find_entire_word_button_from_menu_pattern = exists(FindToolbar.FIND_ENTIRE_WORD, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert find_entire_word_button_from_menu_pattern, "Find Entire Word button using Menu cannot be identified"
 
         try:
             button_whole_words_x = find(FindToolbar.FIND_ENTIRE_WORD).x
@@ -125,6 +143,8 @@ class Test(FirefoxTest):
         hamburger_menu_find_in_page_displayed = exists(
             HamburgerMenu.HAMBURGER_MENU_FIND_IN_PAGE_PATTERN, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
+        assert hamburger_menu_find_in_page_displayed, "Find in Page option using Hambergurger menu not found!"
+
         if hamburger_menu_find_in_page_displayed:
             click(HamburgerMenu.HAMBURGER_MENU_FIND_IN_PAGE_PATTERN)
         else:
@@ -142,15 +162,24 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError("Could not get the x-coordinate of the Find Toolbar")
 
+        highlight_all_button_from_hamburger_pattern = exists(FindToolbar.HIGHLIGHT, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert highlight_all_button_from_hamburger_pattern, "Highlight All button using Hamburger cannot be identified"
+
         try:
             button_highlight_all_x = find(FindToolbar.HIGHLIGHT).x
         except FindError:
             raise FindError("Could not get the x-coordinate of the Highlight All button")
 
+        match_case_button_from_hamburger_pattern = exists(FindToolbar.FIND_CASE_SENSITIVE, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert match_case_button_from_hamburger_pattern, "Match Case button using Hamburger cannot be identified"
+
         try:
             button_match_case_x = find(FindToolbar.FIND_CASE_SENSITIVE).x
         except FindError:
             raise FindError("Could not get the x-coordinate of the Match Case button")
+
+        find_entire_word_button_from_hamburger_pattern = exists(FindToolbar.FIND_ENTIRE_WORD, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert find_entire_word_button_from_hamburger_pattern, "Find Entire Word button using Hamburger cannot be identified"
 
         try:
             button_whole_words_x = find(FindToolbar.FIND_ENTIRE_WORD).x
