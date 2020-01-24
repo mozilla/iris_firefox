@@ -43,8 +43,8 @@ class Test(FirefoxTest):
         downloads_tab_location = find(downloads_tab_pattern)
 
         pref_tab_width, pref_tab_height = pref_tab_pattern.get_size()
-        first_reorder_window_region = Region(pref_tab_location.x - pref_tab_width / 4,
-                                             pref_tab_location.y - pref_tab_height / 4,
+        first_reorder_window_region = Region(pref_tab_location.x - pref_tab_width // 4,
+                                             pref_tab_location.y - pref_tab_height // 4,
                                              pref_tab_width * 3.5,
                                              pref_tab_height * 1.5
                                              )
@@ -65,23 +65,25 @@ class Test(FirefoxTest):
         controls_location = find(new_tab_image_pattern)
         x_coord = controls_location.x
         y_coord = controls_location.y
-        drag_start = Location(Screen.SCREEN_WIDTH / 2, y_coord + 5)
-        drag_end = Location(Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
-        drag_drop(drag_start, drag_end, duration=drag_and_drop_duration)
+        drag_start = Location(Screen.SCREEN_WIDTH // 2, y_coord + 5)
+        drag_end = Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2)
+        drag_drop(drag_start, drag_end)
+
+        time.sleep(drag_and_drop_duration)
 
         tab_location = find(new_tab_image_pattern)
         drop_location = find(mozilla_tab_pattern)
         drag_drop(tab_location, drop_location, duration=drag_and_drop_duration)
         pref_tab_width, pref_tab_height = pref_tab_pattern.get_size()
 
-        second_reorder_window_region = Region(pref_tab_location.x - pref_tab_width / 4,
-                                              pref_tab_location.y - pref_tab_height / 4,
+        second_reorder_window_region = Region(pref_tab_location.x - pref_tab_width // 4,
+                                              pref_tab_location.y - pref_tab_height // 4,
                                               pref_tab_width * 3.5,
                                               pref_tab_height * 1.5
                                               )
 
         new_tab_image = exists(new_tab_image_pattern, FirefoxSettings.FIREFOX_TIMEOUT, second_reorder_window_region)
-        assert new_tab_image, "Could find drag and dropped 'new tab' in the dropped location of the first window "
+        assert new_tab_image, "Could not find drag and dropped 'new tab' in the dropped location of the first window "
         mozilla_tab_location = find(unopened_mozilla_tab_pattern)
         new_tab_location = find(new_tab_image_pattern)
 
