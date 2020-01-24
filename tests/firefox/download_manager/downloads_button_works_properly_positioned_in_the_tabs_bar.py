@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         test_case_id="99473",
         test_suite_id="1827",
         profile=Profiles.BRAND_NEW,
-        blocked_by={"id": "4546", "platform": [OSPlatform.WINDOWS, OSPlatform.LINUX]},
         preferences={
             "browser.download.dir": PathManager.get_downloads_dir(),
             "browser.download.folderList": 2,
@@ -64,6 +63,9 @@ class Test(FirefoxTest):
         for pattern in downloads_library_list:
             expected = exists(pattern, 50)
             assert expected is True, "%s file found in the Library, Downloads section." % str(pattern.get_filename())
+
+        close_button_pattern = exit(AuxiliaryWindow.CLOSE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert close_button_pattern, "Auxiliary window close button not found!"
 
         click_window_control("close")
 
