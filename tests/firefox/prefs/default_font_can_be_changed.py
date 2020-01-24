@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         test_case_id="143553",
         test_suite_id="2241",
         locale=["en-US"],
-        blocked_by={"id": "4502", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         about_preferences_general_url_pattern = Pattern("about_preferences_general_url.png")
@@ -62,5 +61,4 @@ class Test(FirefoxTest):
         next_tab()
 
         font_is_changed_to_another = exists(page_with_mod_font_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-
         assert font_is_changed_to_another, "Font is successfully changed."
