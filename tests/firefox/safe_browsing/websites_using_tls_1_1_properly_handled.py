@@ -12,16 +12,20 @@ class Test(FirefoxTest):
         test_case_id="3951",
         test_suite_id="69",
         locale=["en-US"],
-        blocked_by={"id": "4488", "platform": OSPlatform.ALL},
-
     )
     def run(self, firefox):
         bad_ssl_logo_pattern = Pattern("bad_ssl_logo.png")
         show_connection_details_button_pattern = Pattern("show_connection_details_button.png")
         more_information_button_pattern = Pattern("more_information_button.png")
         tls_broken_encryption_message_pattern = Pattern("tls_1_1_broken_encryption_message.png")
+        enable_tls_button = Pattern("enable_tls_button.png")
 
         navigate("https://tls-v1-1.badssl.com:1011/")
+
+        enable_tls_button_expected = exists(enable_tls_button, FirefoxSettings.FIREFOX_TIMEOUT)
+
+        if enable_tls_button_expected:
+            click(enable_tls_button)
 
         bad_ssl_page_loaded = exists(bad_ssl_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert bad_ssl_page_loaded, "Bad SSL page sucessfully loaded"

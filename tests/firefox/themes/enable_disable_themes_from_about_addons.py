@@ -18,7 +18,7 @@ class Test(FirefoxTest):
         addons_manager_dark_tab = Pattern("addons_manager_dark.png")
         light_theme_highlighted = Pattern("light_theme_enabled.png")
         most_visited_bookmarks = Pattern("most_visited_bookmarks.png")
-        new_tab_icon = Pattern("new_tab_icon.png")
+        new_tab_icon = Pattern("new_tab_icon_light.png")
         pinned_tab = Pattern("pinned_new_tab.png")
         file_menu = Pattern("file_menu_option_light_theme.png")
 
@@ -118,7 +118,6 @@ class Test(FirefoxTest):
 
         # drag new tab to new window
         controls_location = find(new_tab_icon)
-        x_coord = controls_location.x
         y_coord = controls_location.y
         drag_start = Location(Screen.SCREEN_WIDTH/2, y_coord + 5)
         drag_end = Location(Screen.SCREEN_WIDTH/2, Screen.SCREEN_HEIGHT/2)
@@ -126,11 +125,13 @@ class Test(FirefoxTest):
         drag_drop(drag_start, drag_end, duration=drag_and_drop_duration)
 
         tab_location = find(new_tab_icon)
-        drop_location = find(addons_manager_light_tab)
-        drag_drop(tab_location, drop_location, duration=drag_and_drop_duration)
+        drag_location = find(new_tab_icon)
+        new_tab_width, new_tab_height = new_tab_icon.get_size()
+        drop_location = tab_location.offset(new_tab_width * 2,-new_tab_width * 2)
+        drag_drop(drag_location, drop_location, duration=drag_and_drop_duration)
 
         top_sites_expected = exists(new_tab_icon, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert top_sites_expected, "Unable move a tab to new window."
+        assert top_sites_expected, "Unable to move a tab to new window."
 
     @staticmethod
     def switch_between_dark_and_light_themes(self, themes, addons_manager_tab):

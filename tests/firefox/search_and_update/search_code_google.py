@@ -200,3 +200,4 @@ class Test(FirefoxTest):
                 assert url_text == "https://www.google.com/search?client=firefox-b-1-e&q=beats", (
                     "Client search code is correct for searches from about:newtab page, region " + fx_region_code + "."
                 )
+                

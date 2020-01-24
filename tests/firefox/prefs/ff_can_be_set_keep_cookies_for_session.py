@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         test_case_id="143634",
         test_suite_id="2241",
         locale=["en-US"],
-        blocked_by={"id": "4501", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         custom_level_option_pattern = Pattern("custom_level_option.png")

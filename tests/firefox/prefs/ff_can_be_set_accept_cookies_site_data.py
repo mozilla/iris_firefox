@@ -12,12 +12,11 @@ class Test(FirefoxTest):
         test_case_id="143653",
         test_suite_id="2241",
         locale=["en-US"],
-        blocked_by={"id": "4499", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         save_changes_button_pattern = AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON
 
-        browser_privacy_hover_pattern = Pattern("browser_privacy_hover.png")
+        browser_privacy_hover_pattern = Pattern("browser_privacy_hover.png").similar(0.7)
         standard_security_level_pattern = Pattern("standard_sec_level.png")
         manage_data_button_pattern = Pattern("manage_data_button.png")
         manage_permissions_pattern = Pattern("manage_permissions.png")

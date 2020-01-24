@@ -14,6 +14,7 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH,
         set_profile_pref={"browser.startup.homepage": "about:home"},
         profile=Profiles.TEN_BOOKMARKS,
+        blocked_by={"id": "4320", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         default_zoom_level_toolbar_customize_page_pattern = (NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE).similar(
