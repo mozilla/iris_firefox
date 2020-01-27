@@ -11,8 +11,7 @@ class Test(FirefoxTest):
         description="This is a test of the library window controls.",
         locale=["en-US"],
         test_case_id="120467",
-        test_suite_id="1998",
-        blocked_by={"id": "4555", "platform": OSPlatform.WINDOWS},
+        test_suite_id="1998"
     )
     def run(self, firefox):
         library_title_pattern = Library.TITLE
