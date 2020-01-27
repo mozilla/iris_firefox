@@ -49,7 +49,7 @@ class Test(FirefoxTest):
         assert mozilla_logo_full_exists, "Mozilla URL https://www.mozilla.org/en-US/' couldn't load"
         open_save_page()
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        type(Key.ENTER)
+        type(Key.ENTER, interval=2)
         if OSHelper.is_mac() or OSHelper.is_linux():
             replace_button_duplicate_check_exists = exists(
                 replace_button_duplicate_check, FirefoxSettings.FIREFOX_TIMEOUT

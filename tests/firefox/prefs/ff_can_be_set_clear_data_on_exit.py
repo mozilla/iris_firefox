@@ -35,7 +35,6 @@ class Test(FirefoxTest):
         clear_form_search_patten = Pattern("clear_form_search.png").similar(0.6)
 
         pdf_file = self.get_asset_path("Faust.pdf")
-        ui_timeout = 1
         quick_click_duration = 0.3
 
         box_width, box_height = prefs_checked_box_pattern.get_size()
@@ -140,7 +139,7 @@ class Test(FirefoxTest):
                                                  browsing_region)
         assert clear_browsing_download_checked, '"Clear browsing and download" is checked'
 
-        settings_still_opened = exists(clear_form_search_patten)
+        settings_still_opened = exists(clear_form_search_patten, FirefoxSettings.FIREFOX_TIMEOUT)
         assert settings_still_opened, "Settings are still opened"
 
         clear_form_search_checked = find_in_region_from_pattern(clear_form_search_patten, AboutPreferences.CHECKED_BOX)
@@ -155,15 +154,15 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        settings_closed = exists(clear_history_settings_pattern)
+        settings_closed = exists(clear_history_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert settings_closed, "History purging menu is closed"
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-        firefox_page_loaded = exists(LocalWeb.FIREFOX_LOGO)
+        firefox_page_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_page_loaded, "Firefox page is loaded"
 
         navigate(pdf_file)
-        pdf_opened = exists(download_pdf_pattern)
+        pdf_opened = exists(download_pdf_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert pdf_opened, "Pdf was opened in browser"
 
         click(download_pdf_pattern)
@@ -183,7 +182,7 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.BLANK_PAGE)
 
-        navbar_displayed = exists(NavBar.LIBRARY_MENU)
+        navbar_displayed = exists(NavBar.LIBRARY_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
         assert navbar_displayed, "Navigation bar is displayed"
 
         click(NavBar.LIBRARY_MENU)
@@ -193,7 +192,7 @@ class Test(FirefoxTest):
 
         click(LibraryMenu.HISTORY_BUTTON, quick_click_duration)
 
-        history_menu_opened = exists(History.HistoryMenu.SHOW_ALL_HISTORY)
+        history_menu_opened = exists(History.HistoryMenu.SHOW_ALL_HISTORY, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_menu_opened, "History menu is opened"
 
         move(History.HistoryMenu.SHOW_ALL_HISTORY, quick_click_duration)
@@ -218,11 +217,11 @@ class Test(FirefoxTest):
 
             click(Library.DOWNLOADS, quick_click_duration)
 
-            download_saved = exists(pdf_downloaded_pattern)
+            download_saved = exists(pdf_downloaded_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert download_saved, "Downloads are saved so far"
 
             close_tab()
-            library_window_closed = not exists(Library.TITLE, ui_timeout)
+            library_window_closed = not exists(Library.TITLE, FirefoxSettings.FIREFOX_TIMEOUT)
             assert library_window_closed, "Library is closed"
 
         else:
@@ -255,7 +254,7 @@ class Test(FirefoxTest):
 
         move(History.HistoryMenu.SHOW_ALL_HISTORY, quick_click_duration)
 
-        browsing_history_purged = not exists(LocalWeb.FIREFOX_BOOKMARK, ui_timeout)
+        browsing_history_purged = not exists(LocalWeb.FIREFOX_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browsing_history_purged, "Browsing history was cleared"
 
         possible_to_return = exists(Utils.LIBRARY_BACK_BUTTON,FirefoxSettings.FIREFOX_TIMEOUT)
@@ -274,12 +273,12 @@ class Test(FirefoxTest):
 
             click(Library.DOWNLOADS, quick_click_duration)
 
-            download_not_saved = not exists(pdf_downloaded_pattern, ui_timeout)
+            download_not_saved = not exists(pdf_downloaded_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert download_not_saved, "Downloads are cleared"
 
             close_tab()
 
-            library_window_closed = not exists(Library.TITLE, ui_timeout)
+            library_window_closed = not exists(Library.TITLE, FirefoxSettings.FIREFOX_TIMEOUT)
             assert library_window_closed, "Library is closed"
 
         else:
@@ -290,7 +289,7 @@ class Test(FirefoxTest):
 
             move(DownloadManager.SHOW_ALL_DOWNLOADS, quick_click_duration)
 
-            download_not_saved = not exists(pdf_downloaded_pattern, ui_timeout)
+            download_not_saved = not exists(pdf_downloaded_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert download_not_saved, "Downloads are cleared"
 
             restore_firefox_focus()
