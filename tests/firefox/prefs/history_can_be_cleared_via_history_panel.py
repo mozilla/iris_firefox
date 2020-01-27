@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         test_case_id="143611",
         test_suite_id="2241",
         locale=["en-US"],
-        blocked_by={"id": "4552", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         clear_everything_history_pattern = Pattern("clear_everything_history.png")
@@ -22,7 +21,6 @@ class Test(FirefoxTest):
         clear_last_hour_history_pattern = Pattern("clear_last_hour_history.png")
         clear_last_two_hours_history_pattern = Pattern("clear_last_two_hours_history.png")
         clear_now_button_pattern = Pattern("clear_now_button.png")
-        ui_timeout = 1
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -30,75 +28,78 @@ class Test(FirefoxTest):
         assert firefox_page_loaded, "Firefox local page is loaded"
 
         navigate(LocalWeb.FOCUS_TEST_SITE)
-        focus_page_loaded = exists(LocalWeb.FOCUS_LOGO)
+        focus_page_loaded = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert focus_page_loaded, "Focus local page is loaded"
 
         close_tab()
 
-        navigation_bar_reachable = exists(NavBar.LIBRARY_MENU)
+        navigation_bar_reachable = exists(NavBar.LIBRARY_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
         assert navigation_bar_reachable, "Navigation bar reachable"
 
         click(NavBar.LIBRARY_MENU)
 
-        sidebar_menu_bar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_ICON)
+        sidebar_menu_bar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_ICON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert sidebar_menu_bar_opened, "Sidebar is opened"
 
         click(Sidebar.HistorySidebar.SIDEBAR_HISTORY_ICON)
 
-        history_submenu_opened = exists(History.HistoryMenu.VIEW_HISTORY_SIDEBAR)
+        history_submenu_opened = exists(History.HistoryMenu.VIEW_HISTORY_SIDEBAR, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_submenu_opened, "History submenu is opened"
 
-        firefox_page_visited = exists(LocalWeb.FIREFOX_BOOKMARK)
+        firefox_page_visited = exists(LocalWeb.FIREFOX_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_page_visited, "Firefox local page visit was saved in history"
 
-        focus_page_visited = exists(LocalWeb.FOCUS_BOOKMARK)
+        focus_page_visited = exists(LocalWeb.FOCUS_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
         assert focus_page_visited, "Focus local page visit was saved in history"
 
         restore_firefox_focus()
 
         navigate("about:preferences#privacy")
-        preferences_privacy_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        preferences_privacy_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
+                                            FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_privacy_opened, (
             "The about:preferences page is successfully loaded.The options for "
             + '"Privacy & Security" section are displayed.'
         )
 
         paste("Firefox will")
-        history_prefs_displayed = exists(clear_history_button_pattern)
+        history_prefs_displayed = exists(clear_history_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_prefs_displayed, "History section in privacy preferences is displayed"
 
         click(clear_history_button_pattern)
 
-        history_purging_settings_opened = exists(clear_last_hour_history_pattern)
+        history_purging_settings_opened = exists(clear_last_hour_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_purging_settings_opened, '"Clear recent history" sub-window is opened'
 
         click(clear_last_hour_history_pattern)
 
-        clear_last_two_hours_history_displayed = exists(clear_last_two_hours_history_pattern)
+        clear_last_two_hours_history_displayed = exists(clear_last_two_hours_history_pattern,
+                                                        FirefoxSettings.FIREFOX_TIMEOUT)
         assert clear_last_two_hours_history_displayed, "Time range menu is displayed properly"
 
-        clear_last_four_hours_history_displayed = exists(clear_last_four_hours_history_pattern)
+        clear_last_four_hours_history_displayed = exists(clear_last_four_hours_history_pattern,
+                                                         FirefoxSettings.FIREFOX_TIMEOUT)
         assert clear_last_four_hours_history_displayed, "Time range menu is displayed properly"
 
-        clear_history_today_displayed = exists(clear_history_today_pattern)
+        clear_history_today_displayed = exists(clear_history_today_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert clear_history_today_displayed, "Time range menu is displayed properly"
 
-        clear_everything_history_displayed = exists(clear_everything_history_pattern)
+        clear_everything_history_displayed = exists(clear_everything_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert clear_everything_history_displayed, "Time range menu is displayed properly"
 
         click(clear_history_today_pattern)
 
-        sub_window_displayed = exists(clear_now_button_pattern)
+        sub_window_displayed = exists(clear_now_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert sub_window_displayed, "Sub-window is still displayed"
 
         click(clear_now_button_pattern)
 
-        navigation_bar_reachable = exists(NavBar.LIBRARY_MENU)
+        navigation_bar_reachable = exists(NavBar.LIBRARY_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
         assert navigation_bar_reachable, "Navigation bar reachable"
 
         click(NavBar.LIBRARY_MENU)
 
-        sidebar_menu_bar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_ICON)
+        sidebar_menu_bar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_ICON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert sidebar_menu_bar_opened, "Sidebar is opened"
 
         click(Sidebar.HistorySidebar.SIDEBAR_HISTORY_ICON)
@@ -106,8 +107,8 @@ class Test(FirefoxTest):
         history_submenu_opened = exists(History.HistoryMenu.VIEW_HISTORY_SIDEBAR)
         assert history_submenu_opened, "History submenu is opened"
 
-        firefox_page_visit_deleted = not exists(LocalWeb.FIREFOX_BOOKMARK, ui_timeout)
+        firefox_page_visit_deleted = not exists(LocalWeb.FIREFOX_BOOKMARK, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         assert firefox_page_visit_deleted, "Firefox local page visit was deleted from history"
 
-        focus_page_visit_deleted = not exists(LocalWeb.FOCUS_BOOKMARK, ui_timeout)
+        focus_page_visit_deleted = not exists(LocalWeb.FOCUS_BOOKMARK, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         assert focus_page_visit_deleted, "Focus local page visit was deleted from history"
