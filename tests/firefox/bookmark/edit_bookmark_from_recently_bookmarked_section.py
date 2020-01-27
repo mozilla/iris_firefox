@@ -13,7 +13,6 @@ class Test(FirefoxTest):
         test_case_id="165492",
         test_suite_id="2525",
         profile=Profiles.TEN_BOOKMARKS,
-        blocked_by={"id": "4478", "platform": [OSPlatform.MAC, OSPlatform.LINUX]},
     )
     def run(self, firefox):
         properties_option_pattern = Pattern("properties_option.png")
@@ -84,6 +83,7 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
         if OSHelper.is_mac():
             type(Key.TAB)
+            type(Key.DOWN)
         else:
             [type(Key.TAB) for _ in range(2)]
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -129,6 +129,7 @@ class Test(FirefoxTest):
 
         if OSHelper.is_mac():
             type(Key.TAB)
+            type(Key.DOWN)
         else:
             [type(Key.TAB) for _ in range(2)]
 
