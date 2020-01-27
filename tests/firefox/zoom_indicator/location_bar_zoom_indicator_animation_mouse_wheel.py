@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US", "zh-CN", "es-ES", "de", "fr", "ru", "ko", "pt-PT", "vi", "pl", "tr", "ro", "ja"],
         test_case_id="7446",
         test_suite_id="242",
-        blocked_by={"id": "4559", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -43,6 +42,7 @@ class Test(FirefoxTest):
         assert expected, "Zoom level successfully increased, zoom indicator found in the url bar."
 
         firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
+        new_region = create_region_for_url_bar()
 
         expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
         assert expected, "Zoom level successfully increased, zoom indicator found in the url bar."
