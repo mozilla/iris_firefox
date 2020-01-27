@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="161668",
         test_suite_id="2241",
-        blocked_by={"id": "4560", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         recommended_by_pocket_option = Pattern("recommended_by_pocket_option.png")
@@ -21,7 +20,7 @@ class Test(FirefoxTest):
         change_preference("browser.newtabpage.activity-stream.feeds.section.topstories", "true")
         change_preference("browser.search.region", "US")
 
-        firefox.restart(url="about:preferences#home", image=recommended_by_pocket_option)
+        firefox.restart()
 
         navigate("about:preferences#home")
 
@@ -57,7 +56,6 @@ class Test(FirefoxTest):
         pocket_option_location = find(recommended_by_pocket_option)
         width, height = recommended_by_pocket_option.get_size()
         pocket_option_region = Region(pocket_option_location.x - width, pocket_option_location.y, width * 2, height)
-
         pocket_option_selected = exists(AboutPreferences.CHECKED_BOX, region=pocket_option_region)
         assert pocket_option_selected, "The option is selected by default."
 
