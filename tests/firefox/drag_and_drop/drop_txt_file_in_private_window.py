@@ -37,7 +37,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="165086",
         test_suite_id="5259",
-        blocked_by={"id": "4561", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON

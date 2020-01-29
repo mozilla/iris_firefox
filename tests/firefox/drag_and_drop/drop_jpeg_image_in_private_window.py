@@ -39,7 +39,6 @@ class Test(FirefoxTest):
         test_case_id="165085",
         test_suite_id="5259",
         set_profile_pref={"devtools.chrome.enabled": True},
-        blocked_by={"id": "4563", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
