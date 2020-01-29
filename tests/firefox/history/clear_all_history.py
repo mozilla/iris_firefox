@@ -9,7 +9,6 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description="Clear all the History.", locale=["en-US"], test_case_id="172045", test_suite_id="2000",
-        blocked_by={"id": "4323", "platform": OSPlatform.MAC},
     )
     def run(self, firefox):
         searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON.similar(0.9)
@@ -40,7 +39,7 @@ class Test(FirefoxTest):
             expected_3 = exists(selector_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
             assert expected_3, "Sanitize dialog duration selector button found."
             click(selector_button_pattern)
-            for i in range(4):
+            for i in range(5):
                 type(Key.DOWN)
             type(Key.ENTER)
 
