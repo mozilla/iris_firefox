@@ -14,10 +14,10 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH,
         profile=Profiles.BRAND_NEW,
         preferences={"browser.warnOnQuit": False, },
-        blocked_by={"id": "4491", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         new_tab()
+        default_browser_pattern = Pattern("use_as_default_browser.png")
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         website_one_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert website_one_loaded, "Page 1 successfully loaded, firefox logo found."
@@ -28,6 +28,14 @@ class Test(FirefoxTest):
         assert website_two_loaded, "Page 2 successfully loaded, mozilla logo found."
 
         firefox.restart()
+
+
+        default_browser_pattern_exist = exists(default_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        if default_browser_pattern_exist:
+            if OSHelper.is_mac() or OSHelper.is_linux():
+                click(default_browser_pattern)
+            elif OSHelper.is_windows():
+                click_window_control("close")
 
         open_hamburger_menu("Restore Previous Session")
 
