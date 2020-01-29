@@ -12,13 +12,12 @@ class Test(FirefoxTest):
         locale=[Locales.ENGLISH],
         test_case_id="3928",
         test_suite_id="65",
-        blocked_by={"id": "4530", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         pdf_file_page_contents_zoomed_in_pattern = Pattern("pdf_file_page_contents_zoomed_in.png").similar(0.7)
         pdf_file_page_contents_pattern = Pattern("pdf_file_page_contents.png").similar(0.7)
-        zoom_out_button_pattern = Pattern("zoom_out_button.png").similar(0.7)
-        zoom_in_button_pattern = Pattern("zoom_in_button.png").similar(0.75)
+        zoom_out_button_pattern = Pattern("zoom_out_button.png")
+        zoom_in_button_pattern = Pattern("zoom_in_button.png")
 
         change_preference("pdfjs.defaultZoomValue", "100")
 
@@ -38,17 +37,19 @@ class Test(FirefoxTest):
         assert zoom_in_button_available, "'Zoom in (+)' button available in In-browser PDF viewer"
         zoom_in_region = find(zoom_in_button_pattern)  # to avoid clicks on 'new tab' plus sign
 
-        [click(zoom_in_region) for _ in range(3)]
-
+        for _ in range(3):
+            click(zoom_in_region, duration=1)
         pdf_document_zoomed_in = exists(pdf_file_page_contents_zoomed_in_pattern)
         assert pdf_document_zoomed_in, "The PDF file is successfully zoomed in via '+' button"
 
-        zoom_out_button_available = exists(zoom_out_button_pattern)
+        home_button_location = find(NavBar.HOME_BUTTON)
+        zoom_buttons_region = Region(0, home_button_location.y, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT / 4)
+        zoom_out_button_available = exists(zoom_out_button_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         assert zoom_out_button_available, "'Zoom out (-)' button available in In-browser PDF viewer"
-
-        [click(zoom_out_button_pattern) for _ in range(3)]
-
-        pdf_document_zoomed_out = exists(pdf_file_page_contents_pattern)
+        for _ in range(3):
+            click(zoom_out_button_pattern, duration=1, region=zoom_buttons_region,align="top_left")
+        pdf_document_zoomed_out = exists(pdf_file_page_contents_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert pdf_document_zoomed_out, "The PDF file is successfully zoomed out via '-' button"
 
         [type("+", modifier=KeyModifier.CTRL) for _ in range(3)]
