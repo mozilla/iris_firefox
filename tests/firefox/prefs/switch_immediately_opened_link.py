@@ -13,7 +13,6 @@ class Test(FirefoxTest):
         test_suite_id="2241",
         locale=["en-US"],
         preferences={"browser.tabs.loadinBackground": False},
-        blocked_by={"id": "4573", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         when_you_open_link_checked_pattern = Pattern("when_you_open_link_checked.png")

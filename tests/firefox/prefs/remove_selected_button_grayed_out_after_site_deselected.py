@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         test_case_id="145301",
         test_suite_id="2241",
         locale=["en-US"],
-        blocked_by={"id": "4504", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]},
     )
     def run(self, firefox):
         manage_data_button = Pattern("manage_data_button_highlighted.png")
