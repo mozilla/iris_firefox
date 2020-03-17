@@ -12,9 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="171440",
         test_suite_id="2241",
-        preferences={'devtools.chrome.enabled': True},
-        blocked_by={"id": "4483", "platform": OSPlatform.ALL},
-
+        preferences={'devtools.chrome.enabled': True}
     )
     def run(self, firefox):
         about_preferences_home_url_pattern = Pattern('about_preferences_home_url.png')
@@ -113,9 +111,7 @@ class Test(FirefoxTest):
         home_page_highlights_pattern_found = exists(home_page_highlights_pattern,
                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert home_page_highlights_pattern_found, "The Highlights section is not displayed on the Homepage."
-
-        highlights_region_1_row_4_cells = self.region_creation_highlights(highlights_bookmark_soap, 2, 3.25, 5.5,
-                                                                          4.5)
+        highlights_region_1_row_4_cells = self.region_creation_highlights(highlights_bookmark_soap, 2, 3.25, 5.5, 4.5)
         bookmark_sites_default_view_1_row = [
             highlights_bookmark_soap,
             highlights_bookmark_focus,
